@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rohit Srinivasan V — music, credits and catalogue</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#E4E2D9;
+  --paper-2:#DAD8CD;
+  --ink:#1A1A17;
+  --ink-soft:#565349;
+  --rule:#B9B6A8;
+  --stamp:#9C3B2C;
+  --console:#1F4451;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:'Archivo',system-ui,sans-serif; font-size:16px; line-height:1.55;
+  font-variant-numeric:tabular-nums;
+}
+a{color:var(--console); text-decoration:none; border-bottom:1px solid rgba(31,68,81,.35)}
+a:hover{border-bottom-color:var(--console)}
+a:focus-visible{outline:2px solid var(--stamp); outline-offset:3px}
+.wrap{max-width:920px; margin:0 auto; padding:0 24px}
+
+/* ---- masthead ---- */
+header{padding:64px 0 40px}
+.name{
+  font-family:'Instrument Serif',Georgia,serif; font-weight:400;
+  font-size:clamp(3.4rem,12vw,7.5rem); line-height:.86; letter-spacing:-.02em;
+  margin:0 0 22px;
+}
+.name em{font-style:italic}
+.standfirst{
+  max-width:46ch; font-size:1.06rem; color:var(--ink-soft); margin:0 0 26px;
+}
+.meta{display:flex; flex-wrap:wrap; gap:8px 26px; font-size:.86rem; color:var(--ink-soft)}
+
+/* ---- rules & sections ---- */
+.rule{height:1px; background:var(--rule); margin:0}
+section{padding:46px 0}
+h2{
+  font-family:'Instrument Serif',Georgia,serif; font-weight:400;
+  font-size:2.1rem; line-height:1.1; margin:0 0 6px; letter-spacing:-.01em;
+}
+.note{font-size:.9rem; color:var(--ink-soft); margin:0 0 28px; max-width:60ch}
+
+/* ---- credit rows ---- */
+.credit{
+  display:grid; grid-template-columns:118px 1fr; gap:0 22px;
+  padding:18px 0; border-top:1px solid var(--rule);
+}
+.credit:first-of-type{border-top:none}
+.yr{font-size:.82rem; color:var(--ink-soft); padding-top:3px}
+.ttl{font-weight:600; font-size:1.02rem; margin:0 0 3px}
+.sub{font-size:.92rem; color:var(--ink-soft); margin:0}
+.ttl + .sub{margin-top:2px}
+
+/* ---- players ---- */
+.players{display:grid; gap:14px; grid-template-columns:1fr; margin:0 0 6px}
+@media(min-width:720px){.players{grid-template-columns:1fr 1fr}}
+.players iframe{border-radius:10px; display:block; width:100%; border:0}
+
+/* ---- catalogue table ---- */
+.cat{margin-top:6px}
+.bar-row{display:grid; grid-template-columns:190px 1fr 52px; gap:14px; align-items:center; padding:7px 0}
+.bar-row span:first-child{font-size:.92rem}
+.bar-track{height:9px; background:var(--paper-2)}
+.bar-fill{height:9px; background:var(--console)}
+.bar-fill.alt{background:var(--stamp)}
+.bar-row span:last-child{font-size:.86rem; color:var(--ink-soft); text-align:right}
+.split{display:grid; gap:34px; grid-template-columns:1fr}
+@media(min-width:760px){.split{grid-template-columns:1fr 1fr; gap:46px}}
+
+/* ---- roster ---- */
+.roster{
+  font-family:'Instrument Serif',Georgia,serif; font-size:1.5rem; line-height:1.5;
+  margin:0; color:var(--ink);
+}
+.roster span{white-space:nowrap}
+.roster i{font-style:normal; color:var(--rule); padding:0 4px}
+
+/* ---- pull ---- */
+.pull{
+  border-left:3px solid var(--stamp); padding:2px 0 2px 20px; margin:30px 0 0;
+  font-size:1.02rem; max-width:56ch;
+}
+
+/* ---- video ---- */
+.video-link{
+  display:inline-block; margin-top:14px; padding:13px 22px;
+  background:var(--console); color:var(--paper); border:none; font-weight:500; font-size:.95rem;
+}
+.video-link:hover{background:#173743}
+
+footer{padding:52px 0 80px; font-size:.92rem; color:var(--ink-soft)}
+footer a{word-break:break-word}
+.contact{display:flex; flex-wrap:wrap; gap:10px 28px; margin-bottom:18px; font-size:1rem}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<header>
+  <h1 class="name">Rohit<br><em>Srinivasan</em> V</h1>
+  <p class="standfirst">Songwriter, producer and studio manager. Nine years in and around Tamil music, from writing and cutting my own records to running a Chennai studio floor to building the production function that shipped 460 titles of audio and video.</p>
+  <div class="meta">
+    <span>Chennai, India</span>
+    <span>Tamil · English · Hindi</span>
+    <span>Available: [DATE]</span>
+  </div>
+</header>
+
+<div class="rule"></div>
+
+<section>
+  <h2>Start here</h2>
+  <p class="note">Written, sung, composed, produced, mixed and mastered by me.</p>
+  <div class="players">
+    <iframe src="https://open.spotify.com/embed/track/6tI7f8tlMys2HMq30ruaOG" height="152" allow="encrypted-media" loading="lazy" title="Manidham — Original Soundtrack"></iframe>
+    <iframe src="https://open.spotify.com/embed/track/6RyR5byHonBXnPrff59rbz" height="152" allow="encrypted-media" loading="lazy" title="Cutie Pie"></iframe>
+  </div>
+  <p class="pull">The most recent one was written, sung, produced, mixed and mastered inside a cruise cabin between Mumbai and Goa, with no internet and a bad case of seasickness. <a href="https://www.instagram.com/reel/Dcwx2Tmz4v7/">Watch that one</a>.</p>
+  <a class="video-link" href="[VIDEO_LINK]">Watch: two minutes on why I want this desk</a>
+</section>
+
+<div class="rule"></div>
+
+<section>
+  <h2>Released</h2>
+  <p class="note">Selected credits as writer, vocalist and producer.</p>
+
+  <div class="credit">
+    <div class="yr">2025</div>
+    <div>
+      <p class="ttl"><a href="https://open.spotify.com/track/6RyR5byHonBXnPrff59rbz">Cutie Pie</a></p>
+      <p class="sub">With Pavani Vasa. Single.</p>
+    </div>
+  </div>
+  <div class="credit">
+    <div class="yr">2023</div>
+    <div>
+      <p class="ttl"><a href="https://open.spotify.com/album/29JtOcECP89ox07b8cWFPz">Plant Man</a></p>
+      <p class="sub">Ananda Balaji. Single.</p>
+    </div>
+  </div>
+  <div class="credit">
+    <div class="yr">2020</div>
+    <div>
+      <p class="ttl"><a href="https://open.spotify.com/track/6tI7f8tlMys2HMq30ruaOG">Manidham — Original Soundtrack</a></p>
+      <p class="sub">Written, composed and performed.</p>
+    </div>
+  </div>
+  <div class="credit">
+    <div class="yr">2017 – 2020</div>
+    <div>
+      <p class="ttl">200+ tracks. 200+ lyrics.</p>
+      <p class="sub">Full-time singer-songwriter. Assistant to music director Naren Balakumar across three films. Worked with Anand Balaji and a long tail of independent composers. Music for <em>Malar</em>, Colors Tamil. Member of three choral ensembles: El Fe, Pravin Saivi's Vocal Ensemble, and The Indian Choral Ensemble.</p>
+    </div>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<section>
+  <h2>The studio floor</h2>
+  <p class="note">Studio Manager, Offbeat Music Ventures LLP, Chennai. Aug 2021 to Feb 2022. I ran scheduling, client coordination, vendor management, hiring and accounts. Sessions I coordinated during that time included work by:</p>
+  <p class="roster">
+    <span>Ilaiyaraaja</span><i>·</i><span>Yuvan Shankar Raja</span><i>·</i><span>Anirudh Ravichander</span><i>·</i><span>Sid Sriram</span><i>·</i><span>Pradeep Kumar</span><i>·</i><span>Sean Roldan</span><i>·</i><span>Karthik</span><i>·</i><span>Amrit Ramnath</span><i>·</i><span>Dhee</span><i>·</i><span>Shashwat Sachdev</span><i>·</i><span>Avadhoot Gupte</span><i>·</i><span>Hesham Abdul Wahab</span><i>·</i><span>Ofro</span><i>·</i><span>SA Aravind</span><i>·</i><span>Rajkumar Mamidana</span><i>·</i><span>Abhishek &amp; Nirmal</span>
+  </p>
+  <p class="pull">I was not on these records. I was the person who made sure the room, the crew, the schedule and the money worked so the records could happen. That is the job I know from the inside.</p>
+</section>
+
+<div class="rule"></div>
+
+<section>
+  <h2>The catalogue</h2>
+  <p class="note">Head of Production, Yaali DreamWorks, Chennai. Feb 2022 to present. Built the content function from one person to 25+ core staff and 100+ freelancers, helped build seven in-house recording booths, and owned budgets, casting and delivery. 460 titles shipped and logged.</p>
+
+  <div class="split">
+    <div class="cat">
+      <div class="bar-row"><span>Audio series</span><span class="bar-track"><span class="bar-fill" style="width:100%"></span></span><span>103</span></div>
+      <div class="bar-row"><span>Microdrama dub</span><span class="bar-track"><span class="bar-fill" style="width:65%"></span></span><span>67</span></div>
+      <div class="bar-row"><span>Book summaries</span><span class="bar-track"><span class="bar-fill" style="width:58%"></span></span><span>60</span></div>
+      <div class="bar-row"><span>Full books</span><span class="bar-track"><span class="bar-fill" style="width:53%"></span></span><span>55</span></div>
+      <div class="bar-row"><span>Originals, non-fiction</span><span class="bar-track"><span class="bar-fill" style="width:48%"></span></span><span>49</span></div>
+      <div class="bar-row"><span>Infotainment video</span><span class="bar-track"><span class="bar-fill" style="width:47%"></span></span><span>48</span></div>
+      <div class="bar-row"><span>Podcasts, docs, other</span><span class="bar-track"><span class="bar-fill" style="width:18%"></span></span><span>18</span></div>
+    </div>
+    <div class="cat">
+      <div class="bar-row"><span>Tamil</span><span class="bar-track"><span class="bar-fill alt" style="width:100%"></span></span><span>371</span></div>
+      <div class="bar-row"><span>Hindi</span><span class="bar-track"><span class="bar-fill alt" style="width:9%"></span></span><span>13</span></div>
+      <div class="bar-row"><span>Telugu</span><span class="bar-track"><span class="bar-fill alt" style="width:8%"></span></span><span>11</span></div>
+      <div class="bar-row"><span>Marathi</span><span class="bar-track"><span class="bar-fill alt" style="width:6%"></span></span><span>7</span></div>
+      <div class="bar-row"><span>Malayalam</span><span class="bar-track"><span class="bar-fill alt" style="width:5%"></span></span><span>5</span></div>
+      <div class="bar-row" style="padding-top:22px"><span>Clients</span><span style="font-size:.92rem;grid-column:2/4">KukuFM, KukuTV, KukuGuru, Pratilipi FM, QuickTV</span></div>
+    </div>
+  </div>
+
+  <p class="pull">3,000+ hours of audio. Music production and sound design were a significant part of the first two years, and sound design stayed core to every original after that.</p>
+</section>
+
+<div class="rule"></div>
+
+<section>
+  <h2>Directed</h2>
+  <div class="credit">
+    <div class="yr">2020 – 2021</div>
+    <div>
+      <p class="ttl"><a href="https://youtube.com/playlist?list=PLFSvJj_Ckj0lfN296XK_rMNymhBhUY3A0">Gurunaadhaa</a></p>
+      <p class="sub">Animated infotainment series. Conceptualised and directed, leading a four-person team, at College Suggest.</p>
+    </div>
+  </div>
+  <div class="credit">
+    <div class="yr">2025</div>
+    <div>
+      <p class="ttl"><a href="https://kadhal-three.vercel.app">Kadhal</a></p>
+      <p class="sub">A dating product I designed and shipped end to end with no engineering background, to learn how software actually gets built. Backend is currently unfunded, so the demo is partial.</p>
+    </div>
+  </div>
+  <div class="credit">
+    <div class="yr">2026 –</div>
+    <div>
+      <p class="ttl"><a href="https://www.instagram.com/rohit.vasudevan">Writing about the entertainment business</a></p>
+      <p class="sub">Short films decoding how the attention economy actually pays. Currently in progress alongside PGP Bharat at Masters' Union.</p>
+    </div>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<footer>
+  <div class="contact">
+    <a href="mailto:[EMAIL]">[EMAIL]</a>
+    <a href="tel:[PHONE]">[PHONE]</a>
+    <a href="https://www.linkedin.com/in/rohit-srinivasan-v">LinkedIn</a>
+    <a href="https://www.instagram.com/not_that_rohit_anymore">Instagram</a>
+  </div>
+  <p>B.E. Electrical and Electronics, Dhanalakshmi College of Engineering, 2013–2017. PGP Bharat, Masters' Union, 2026. Y Combinator Startup School, 2025.</p>
+</footer>
+
+</div>
+</body>
+</html>

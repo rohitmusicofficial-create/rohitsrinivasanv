@@ -1,250 +1,492 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Rohit Srinivasan V — music, credits and catalogue</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta property="og:title" content="Rohit Srinivasan V">
+<meta property="og:description" content="Musician turned operator. Nine years in Tamil music and media, Chennai.">
+<title>Rohit Srinivasan V</title>
+<meta name="description" content="Songwriter, studio manager, head of production. Nine years in Tamil music and media, Chennai.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anybody:wdth,wght@50..150,300..900&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
 <style>
+/* Layout: the site is an LP. Hero = the record, then a tracklist, Side A and Side B as chapters, bonus tracks, liner notes. */
 :root{
-  --paper:#E4E2D9;
-  --paper-2:#DAD8CD;
-  --ink:#1A1A17;
-  --ink-soft:#565349;
-  --rule:#B9B6A8;
-  --stamp:#9C3B2C;
-  --console:#1F4451;
+  --night:#16133a;      /* studio after midnight */
+  --night-2:#211d52;
+  --sleeve:#2b2666;
+  --marigold:#f4b52c;   /* record label, Chennai marigold */
+  --jasmine:#f6f1e3;    /* text */
+  --dust:#a9a4cf;       /* secondary text */
+  --rose:#ff6f91;       /* single hot accent for signal / live */
+  --line:rgba(246,241,227,.14);
+  --f-display:"Anybody","Arial Narrow",Impact,sans-serif;
+  --f-body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:dark;
 }
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
-body{
-  margin:0; background:var(--paper); color:var(--ink);
-  font-family:'Archivo',system-ui,sans-serif; font-size:16px; line-height:1.55;
-  font-variant-numeric:tabular-nums;
+html{scroll-behavior:smooth}
+body{background:var(--night);color:var(--jasmine);font:400 17px/1.6 var(--f-body);margin:0;overflow-x:hidden}
+a{color:inherit}
+a:focus-visible,button:focus-visible{outline:2px solid var(--marigold);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:clamp(16px,4vw,40px)}
+.mono{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:.92}
+p{margin:0}
+
+/* top bar */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--night) 86%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px}
+.logo{font-family:var(--f-display);font-weight:900;font-stretch:130%;font-size:1.15rem;text-decoration:none;letter-spacing:.02em}
+.logo span{color:var(--marigold)}
+.bar nav{display:flex;gap:clamp(12px,2.4vw,28px);flex-wrap:wrap}
+.bar nav a{text-decoration:none;color:var(--dust)}
+.bar nav a:hover{color:var(--jasmine)}
+@media (max-width:620px){.bar nav a.hide-s{display:none}}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(24px,5vw,72px);align-items:center;padding-block:clamp(40px,7vw,96px) clamp(40px,6vw,80px)}
+.hero > *{min-width:0}
+.eyebrow{color:var(--marigold);margin-bottom:22px;display:flex;gap:10px;align-items:center}
+.eyebrow::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--rose);box-shadow:0 0 12px var(--rose)}
+.name{font-weight:900;font-stretch:62%;font-size:clamp(4.2rem,12.5vw,10.5rem);text-transform:uppercase;letter-spacing:-.01em}
+.name .wide{display:block;font-stretch:150%;font-weight:300;font-size:.42em;letter-spacing:.04em;color:var(--marigold);margin-block:.12em}
+.lede{margin-top:28px;max-width:34ch;font-size:clamp(1.1rem,1.6vw,1.3rem);color:var(--jasmine)}
+.lede em{font-style:normal;color:var(--marigold)}
+.meta{margin-top:26px;display:flex;flex-wrap:wrap;gap:8px 20px;color:var(--dust)}
+
+/* record */
+.deck{position:relative;aspect-ratio:1;max-width:520px;width:100%;justify-self:center}
+.platter{position:absolute;inset:4%;border-radius:50%;background:#0c0a22;box-shadow:0 30px 80px rgba(0,0,0,.5),inset 0 0 0 2px #2c2860}
+.vinyl{position:absolute;inset:7%;border-radius:50%;
+  background:
+   conic-gradient(from 40deg,rgba(255,255,255,.0) 0deg,rgba(255,255,255,.10) 30deg,rgba(255,255,255,0) 70deg,rgba(255,255,255,0) 180deg,rgba(255,255,255,.07) 215deg,rgba(255,255,255,0) 250deg),
+   repeating-radial-gradient(circle at 50% 50%,#121018 0 2px,#1b1826 2px 3px);
+  animation:spin 1.8s linear infinite;animation-play-state:paused}
+.deck.playing .vinyl{animation-play-state:running}
+.label{position:absolute;inset:33%;border-radius:50%;background:var(--marigold);color:var(--night);display:grid;place-items:center;text-align:center;padding:8%}
+.label b{display:block;font-family:var(--f-display);font-weight:900;font-stretch:140%;font-size:clamp(1rem,2.6vw,1.6rem);line-height:1}
+.label small{display:block;font-family:var(--f-mono);font-size:clamp(.5rem,1vw,.62rem);letter-spacing:.1em;margin-top:6px;text-transform:uppercase}
+.label::after{content:"";position:absolute;width:7%;height:7%;border-radius:50%;background:var(--night);left:46.5%;top:46.5%}
+.arm{position:absolute;right:2%;top:2%;width:44%;height:8px;transform-origin:92% 50%;transform:rotate(-58deg);transition:transform .9s cubic-bezier(.6,.05,.3,1)}
+.deck.playing .arm{transform:rotate(-30deg)}
+.arm i{position:absolute;inset:0;background:linear-gradient(90deg,#d9d4ee,#8f89b9);border-radius:6px}
+.arm::before{content:"";position:absolute;left:-6px;top:-7px;width:26px;height:22px;background:var(--jasmine);border-radius:4px}
+.arm::after{content:"";position:absolute;right:-12px;top:-14px;width:36px;height:36px;border-radius:50%;background:#3a3577;border:3px solid #8f89b9}
+@keyframes spin{to{transform:rotate(360deg)}}
+.needle{position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);display:flex;gap:10px;align-items:center;white-space:nowrap}
+.btn{font:600 .9rem var(--f-body);border:1.5px solid var(--marigold);background:transparent;color:var(--marigold);padding:10px 18px;border-radius:999px;cursor:pointer;text-decoration:none;display:inline-flex;gap:8px;align-items:center}
+.btn:hover{background:var(--marigold);color:var(--night)}
+.btn.solid{background:var(--marigold);color:var(--night)}
+.btn.solid:hover{background:var(--jasmine);border-color:var(--jasmine)}
+@media (max-width:860px){.hero{grid-template-columns:1fr}.deck{max-width:380px;margin-top:10px}}
+
+/* tracklist */
+.section{padding-block:clamp(56px,8vw,110px);border-top:1px solid var(--line)}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:clamp(28px,4vw,48px)}
+.sec-head h2{font-weight:900;font-stretch:72%;font-size:clamp(2.6rem,7vw,5.4rem);text-transform:uppercase}
+.sec-head p{color:var(--dust);max-width:40ch}
+.tracks{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.tracks li a{display:grid;grid-template-columns:4.2rem 1fr auto auto;gap:16px;align-items:baseline;padding:20px 4px;border-bottom:1px solid var(--line);text-decoration:none;transition:background .2s,padding .2s}
+.tracks li a:hover{background:var(--night-2);padding-inline:14px}
+.tracks .no{font-family:var(--f-mono);color:var(--marigold)}
+.tracks .t{font-family:var(--f-display);font-weight:700;font-stretch:110%;font-size:clamp(1.25rem,2.6vw,2rem);line-height:1.1}
+.tracks .t small{display:block;font-family:var(--f-body);font-weight:400;font-size:.95rem;color:var(--dust);margin-top:4px;letter-spacing:0}
+.tracks .yr,.tracks .dur{font-family:var(--f-mono);color:var(--dust);font-variant-numeric:tabular-nums}
+.tracks .dur{color:var(--jasmine)}
+.runtime{display:flex;justify-content:flex-end;gap:16px;padding:14px 4px;color:var(--dust)}
+.runtime b{color:var(--marigold);font-weight:600}
+@media (max-width:620px){.tracks li a{grid-template-columns:3rem 1fr auto}.tracks .yr{display:none}}
+
+/* chapters */
+.chapter{display:grid;grid-template-columns:240px 1fr;gap:clamp(24px,5vw,72px)}
+.chapter > *{min-width:0}
+.side-tag{position:sticky;top:90px;align-self:start}
+.side-tag .big{font-family:var(--f-display);font-weight:900;font-stretch:140%;font-size:clamp(4rem,9vw,7.5rem);line-height:.85;color:var(--marigold)}
+.side-tag .role{margin-top:12px;font-weight:600;font-size:1.05rem}
+.side-tag .when{color:var(--dust);margin-top:4px}
+@media (max-width:860px){.chapter{grid-template-columns:1fr}.side-tag{position:static;display:flex;gap:18px;align-items:end;flex-wrap:wrap}}
+.chapter h3{font-weight:800;font-stretch:90%;font-size:clamp(2rem,4.6vw,3.4rem);margin-bottom:22px}
+.prose{max-width:62ch;color:var(--jasmine)}
+.prose + .prose{margin-top:16px}
+.prose.dim{color:var(--dust)}
+
+.stats{display:flex;flex-wrap:wrap;gap:clamp(20px,4vw,56px);margin-block:34px}
+.stat b{display:block;font-family:var(--f-display);font-weight:900;font-stretch:70%;font-size:clamp(3rem,7vw,5rem);line-height:.9;color:var(--jasmine)}
+.stat span{color:var(--dust)}
+
+.credits{list-style:none;padding:0;margin:30px 0 0;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.credits li{border:1px solid var(--line);border-radius:14px;padding:18px 18px 16px;background:var(--night-2)}
+.credits .y{color:var(--marigold)}
+.credits a{text-decoration:none}
+.credits h4{font-family:var(--f-display);font-weight:800;font-stretch:105%;font-size:1.45rem;margin:6px 0 4px;line-height:1.05}
+.credits a:hover h4{color:var(--marigold)}
+.credits p{color:var(--dust);font-size:.95rem}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.chip{border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:.92rem}
+
+.note{margin-top:34px;border-left:3px solid var(--rose);padding:6px 0 6px 18px;max-width:58ch;color:var(--jasmine)}
+.note a{color:var(--marigold)}
+
+/* session board */
+.board{margin-top:30px;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#100e2c}
+.board-head{display:flex;justify-content:space-between;gap:12px;padding:12px 18px;border-bottom:1px solid var(--line);color:var(--dust);flex-wrap:wrap}
+.board-head .live{color:var(--rose)}
+.board ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
+.board li{display:flex;gap:12px;align-items:baseline;padding:13px 18px;border-bottom:1px dashed var(--line);border-right:1px dashed var(--line);font-family:var(--f-display);font-weight:600;font-stretch:95%;font-size:1.12rem}
+.board li span{font-family:var(--f-mono);font-size:.7rem;color:var(--marigold);font-weight:400}
+
+/* console */
+.console{margin-top:34px;border-radius:18px;background:linear-gradient(#24205a,#1a1745);border:1px solid var(--line);padding:22px clamp(14px,2.5vw,26px) 18px}
+.console-top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--dust);margin-bottom:18px}
+.strips{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:clamp(6px,1.4vw,14px)}
+.strip{display:flex;flex-direction:column;align-items:center;gap:10px;min-width:0}
+.strip .val{font-family:var(--f-mono);font-weight:600;color:var(--marigold);font-variant-numeric:tabular-nums}
+.track{position:relative;width:100%;height:200px;display:flex;justify-content:center}
+.track::before{content:"";position:absolute;top:0;bottom:0;width:4px;border-radius:4px;background:#0d0b26;box-shadow:inset 0 0 0 1px #3a3577}
+.track .fill{position:absolute;bottom:0;width:4px;border-radius:4px;background:var(--marigold);height:var(--h)}
+.track .cap{position:absolute;bottom:calc(var(--h) - 9px);width:min(44px,90%);height:18px;border-radius:4px;background:linear-gradient(#f6f1e3,#b9b3d9);box-shadow:0 4px 10px rgba(0,0,0,.4);transition:bottom 1.2s cubic-bezier(.2,.8,.2,1)}
+.track .cap::after{content:"";position:absolute;left:10%;right:10%;top:8px;height:2px;background:var(--night)}
+.strip .lab{font-size:.8rem;color:var(--dust);text-align:center;line-height:1.25;min-height:2.5em}
+@media (max-width:620px){.track{height:150px}.strip .lab{font-size:.68rem}}
+
+.meters{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin-top:22px}
+.meter-box{border:1px solid var(--line);border-radius:14px;padding:18px;background:var(--night-2)}
+.meter-box h4{margin:0 0 14px;color:var(--dust);font-weight:400}
+.mrow{display:grid;grid-template-columns:5.5rem 1fr 3rem;gap:10px;align-items:center;margin-bottom:9px;font-size:.92rem}
+.mrow .segs{display:flex;gap:2px;height:12px}
+.mrow .segs i{flex:1;border-radius:1px;background:#0d0b26}
+.mrow .segs i.on{background:var(--marigold)}
+.mrow .segs i.on.hot{background:var(--rose)}
+.mrow .n{font-family:var(--f-mono);text-align:right;font-variant-numeric:tabular-nums;color:var(--jasmine)}
+
+/* bonus */
+.bonus{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.card{position:relative;border-radius:18px;padding:26px;background:var(--sleeve);text-decoration:none;display:flex;flex-direction:column;gap:12px;min-height:240px;overflow:hidden;transition:transform .25s}
+.card:hover{transform:translateY(-4px) rotate(-.6deg)}
+.card .k{color:var(--marigold)}
+.card h4{font-family:var(--f-display);font-weight:900;font-stretch:80%;font-size:2.4rem;line-height:.95;margin:0}
+.card p{color:var(--dust)}
+.card .go{margin-top:auto;font-weight:600;color:var(--jasmine)}
+.card.soon{background:transparent;border:1.5px dashed var(--marigold)}
+.card.soon h4{color:var(--marigold)}
+
+/* liner notes */
+.liner{display:grid;grid-template-columns:1.3fr 1fr;gap:clamp(28px,5vw,72px)}
+.liner > *{min-width:0}
+.liner h2{font-weight:900;font-stretch:72%;font-size:clamp(3rem,8vw,6rem);text-transform:uppercase}
+.liner .say{margin-top:20px;font-size:1.2rem;max-width:36ch}
+.contact{list-style:none;padding:0;margin:0;display:flex;flex-direction:column}
+.contact li{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:16px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.contact .k{color:var(--dust)}
+.contact .v{font-weight:600;word-break:break-all}
+.contact .v a{text-decoration:none}
+.contact .v a:hover{color:var(--marigold)}
+.copy{font:500 .78rem var(--f-mono);background:none;border:1px solid var(--line);color:var(--dust);border-radius:999px;padding:5px 10px;cursor:pointer}
+.copy:hover{color:var(--marigold);border-color:var(--marigold)}
+.edu{margin-top:30px;color:var(--dust);display:flex;flex-direction:column;gap:6px}
+@media (max-width:860px){.liner{grid-template-columns:1fr}}
+footer{border-top:1px solid var(--line);padding-block:26px;color:var(--dust)}
+footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .vinyl{animation:none}
+  .arm,.track .cap,.card,.tracks li a{transition:none}
 }
-a{color:var(--console); text-decoration:none; border-bottom:1px solid rgba(31,68,81,.35)}
-a:hover{border-bottom-color:var(--console)}
-a:focus-visible{outline:2px solid var(--stamp); outline-offset:3px}
-.wrap{max-width:920px; margin:0 auto; padding:0 24px}
-
-/* ---- masthead ---- */
-header{padding:64px 0 40px}
-.name{
-  font-family:'Instrument Serif',Georgia,serif; font-weight:400;
-  font-size:clamp(3.4rem,12vw,7.5rem); line-height:.86; letter-spacing:-.02em;
-  margin:0 0 22px;
-}
-.name em{font-style:italic}
-.standfirst{
-  max-width:46ch; font-size:1.06rem; color:var(--ink-soft); margin:0 0 26px;
-}
-.meta{display:flex; flex-wrap:wrap; gap:8px 26px; font-size:.86rem; color:var(--ink-soft)}
-
-/* ---- rules & sections ---- */
-.rule{height:1px; background:var(--rule); margin:0}
-section{padding:46px 0}
-h2{
-  font-family:'Instrument Serif',Georgia,serif; font-weight:400;
-  font-size:2.1rem; line-height:1.1; margin:0 0 6px; letter-spacing:-.01em;
-}
-.note{font-size:.9rem; color:var(--ink-soft); margin:0 0 28px; max-width:60ch}
-
-/* ---- credit rows ---- */
-.credit{
-  display:grid; grid-template-columns:118px 1fr; gap:0 22px;
-  padding:18px 0; border-top:1px solid var(--rule);
-}
-.credit:first-of-type{border-top:none}
-.yr{font-size:.82rem; color:var(--ink-soft); padding-top:3px}
-.ttl{font-weight:600; font-size:1.02rem; margin:0 0 3px}
-.sub{font-size:.92rem; color:var(--ink-soft); margin:0}
-.ttl + .sub{margin-top:2px}
-
-/* ---- players ---- */
-.players{display:grid; gap:14px; grid-template-columns:1fr; margin:0 0 6px}
-@media(min-width:720px){.players{grid-template-columns:1fr 1fr}}
-.players iframe{border-radius:10px; display:block; width:100%; border:0}
-
-/* ---- catalogue table ---- */
-.cat{margin-top:6px}
-.bar-row{display:grid; grid-template-columns:190px 1fr 52px; gap:14px; align-items:center; padding:7px 0}
-.bar-row span:first-child{font-size:.92rem}
-.bar-track{height:9px; background:var(--paper-2)}
-.bar-fill{height:9px; background:var(--console)}
-.bar-fill.alt{background:var(--stamp)}
-.bar-row span:last-child{font-size:.86rem; color:var(--ink-soft); text-align:right}
-.split{display:grid; gap:34px; grid-template-columns:1fr}
-@media(min-width:760px){.split{grid-template-columns:1fr 1fr; gap:46px}}
-
-/* ---- roster ---- */
-.roster{
-  font-family:'Instrument Serif',Georgia,serif; font-size:1.5rem; line-height:1.5;
-  margin:0; color:var(--ink);
-}
-.roster span{white-space:nowrap}
-.roster i{font-style:normal; color:var(--rule); padding:0 4px}
-
-/* ---- pull ---- */
-.pull{
-  border-left:3px solid var(--stamp); padding:2px 0 2px 20px; margin:30px 0 0;
-  font-size:1.02rem; max-width:56ch;
-}
-
-/* ---- video ---- */
-.video-link{
-  display:inline-block; margin-top:14px; padding:13px 22px;
-  background:var(--console); color:var(--paper); border:none; font-weight:500; font-size:.95rem;
-}
-.video-link:hover{background:#173743}
-
-footer{padding:52px 0 80px; font-size:.92rem; color:var(--ink-soft)}
-footer a{word-break:break-word}
-.contact{display:flex; flex-wrap:wrap; gap:10px 28px; margin-bottom:18px; font-size:1rem}
-@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
 <body>
 
-<div class="wrap">
 
-<header>
-  <h1 class="name">Rohit<br><em>Srinivasan</em> V</h1>
-  <p class="standfirst">Songwriter, producer and studio manager. Nine years in and around Tamil music, from writing and cutting my own records to running a Chennai studio floor to building the production function that shipped 460 titles of audio and video, and working alongside the founder on strategy, product direction and investor conversations.</p>
-  <div class="meta">
-    <span>Chennai, India</span>
-    <span>Tamil · English · Hindi</span>
+<header class="bar">
+  <div class="wrap">
+    <a class="logo" href="#top">R<span>S</span>V</a>
+    <nav class="mono" aria-label="Sections">
+      <a href="#tracklist" class="hide-s">Tracklist</a>
+      <a href="#side-a">Side A</a>
+      <a href="#side-b">Side B</a>
+      <a href="#bonus" class="hide-s">Bonus</a>
+      <a href="#contact">Contact</a>
+    </nav>
   </div>
 </header>
 
-<div class="rule"></div>
-
-<section>
-  <h2>Start here</h2>
-  <p class="note">Written, sung, composed, produced, mixed and mastered by me.</p>
-  <div class="players">
-    <iframe src="https://open.spotify.com/embed/track/6tI7f8tlMys2HMq30ruaOG" height="152" allow="encrypted-media" loading="lazy" title="Manidham — Original Soundtrack"></iframe>
-    <iframe src="https://open.spotify.com/embed/track/6RyR5byHonBXnPrff59rbz" height="152" allow="encrypted-media" loading="lazy" title="Cutie Pie"></iframe>
-  </div>
-  <p class="pull">The most recent one was written, sung, produced, mixed and mastered inside a cruise cabin between Mumbai and Goa, with no internet and a bad case of seasickness. <a href="https://www.instagram.com/reel/Dcwx2Tmz4v7/">Watch that one</a>.</p>
-</section>
-
-<div class="rule"></div>
-
-<section>
-  <h2>Released</h2>
-  <p class="note">Selected credits as writer, vocalist and producer.</p>
-
-  <div class="credit">
-    <div class="yr">2025</div>
+<main id="top">
+  <section class="wrap hero">
     <div>
-      <p class="ttl"><a href="https://open.spotify.com/track/6RyR5byHonBXnPrff59rbz">Cutie Pie</a></p>
-      <p class="sub">With Pavani Vasa. Single.</p>
+      <p class="eyebrow mono">Chennai, India</p>
+      <h1 class="name">Rohit<span class="wide">Srinivasan V</span></h1>
+      <p class="lede"><b>Musician turned operator.</b> Nine years in Tamil music and media, from <em>cutting my own records</em> to <em>running a studio floor</em> to <em>building a production company's engine room</em>.</p>
+      <div class="meta mono"><span>200+ tracks sung</span><span>460 titles shipped</span><span>3,000+ hrs of audio</span></div>
     </div>
-  </div>
-  <div class="credit">
-    <div class="yr">2023</div>
-    <div>
-      <p class="ttl"><a href="https://open.spotify.com/album/29JtOcECP89ox07b8cWFPz">Plant Man</a></p>
-      <p class="sub">Ananda Balaji. Single.</p>
+
+    <div class="deck" id="deck">
+      <div class="platter"></div>
+      <div class="vinyl" aria-hidden="true"></div>
+      <div class="label" aria-hidden="true"><div><b>RSV</b><small>9 yrs · 33⅓ rpm</small></div></div>
+      <div class="arm" aria-hidden="true"><i></i></div>
+      <div class="needle">
+        <button class="btn solid" id="drop" type="button" aria-pressed="false">▶ Drop the needle</button>
+      </div>
     </div>
-  </div>
-  <div class="credit">
-    <div class="yr">2020</div>
-    <div>
-      <p class="ttl"><a href="https://open.spotify.com/track/6tI7f8tlMys2HMq30ruaOG">Manidham — Original Soundtrack</a></p>
-      <p class="sub">Written, composed and performed.</p>
+  </section>
+
+  <section class="section" id="tracklist">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Tracklist</h2>
+        <p>Four jobs, one long record. Running times are in years and months.</p>
+      </div>
+      <ol class="tracks">
+        <li><a href="#a1"><span class="no">A1</span><span class="t">Singer-songwriter<small>Freelance · writing, singing, producing</small></span><span class="yr">2017–20</span><span class="dur">2:08</span></a></li>
+        <li><a href="#a2"><span class="no">A2</span><span class="t">College Suggest<small>Content strategist · director of Gurunaadhaa</small></span><span class="yr">2020–21</span><span class="dur">1:01</span></a></li>
+        <li><a href="#b1"><span class="no">B1</span><span class="t">Offbeat Music Ventures<small>Studio manager</small></span><span class="yr">2021–22</span><span class="dur">0:06</span></a></li>
+        <li><a href="#b2"><span class="no">B2</span><span class="t">Yaali DreamWorks<small>Head of Production · Founder's Office</small></span><span class="yr">2022–now</span><span class="dur">4:08</span></a></li>
+      </ol>
+      <div class="runtime mono"><span>Total running time</span><b>8:11 and counting</b></div>
     </div>
-  </div>
-  <div class="credit">
-    <div class="yr">2017 – 2020</div>
-    <div>
-      <p class="ttl">200+ tracks. 200+ lyrics.</p>
-      <p class="sub">Full-time singer-songwriter. Assistant to music director Naren Balakumar across three films. Worked with Anand Balaji and a long tail of independent composers. Music for <em>Malar</em>, Colors Tamil. Member of three choral ensembles: El Fe, Pravin Saivi's Vocal Ensemble, and The Indian Choral Ensemble.</p>
+  </section>
+
+  <section class="section" id="side-a">
+    <div class="wrap">
+      <div class="chapter" id="a1">
+        <div class="side-tag"><div class="big">A1</div><div><div class="role">Singer-songwriter</div><div class="when mono">Nov 2017 – Jul 2020</div></div></div>
+        <div>
+          <h3>Written, sung, produced, mixed and mastered by me.</h3>
+          <p class="prose">Three years as a full-time singer-songwriter. Assistant to music director Naren Balakumar across three films, work with Anand Balaji and a long tail of independent composers, and music for <i>Malar</i> on Colors Tamil.</p>
+          <div class="stats">
+            <div class="stat"><b>200+</b><span>tracks sung</span></div>
+            <div class="stat"><b>200+</b><span>lyrics written</span></div>
+            <div class="stat"><b>3</b><span>choral ensembles</span></div>
+          </div>
+          <ul class="credits">
+            <li><a href="https://open.spotify.com/track/6RyR5byHonBXnPrff59rbz" target="_blank" rel="noopener"><span class="y mono">2025 · Single</span><h4>Cutie Pie ↗</h4><p>With Pavani Vasa.</p></a></li>
+            <li><a href="https://open.spotify.com/album/29JtOcECP89ox07b8cWFPz" target="_blank" rel="noopener"><span class="y mono">2023 · Single</span><h4>Plant Man ↗</h4><p>Ananda Balaji.</p></a></li>
+            <li><a href="https://open.spotify.com/track/6tI7f8tlMys2HMq30ruaOG" target="_blank" rel="noopener"><span class="y mono">2020 · Soundtrack</span><h4>Manidham OST ↗</h4><p>Written, composed and performed.</p></a></li>
+          </ul>
+          <p class="mono" style="margin-top:30px;color:var(--dust)">Sang with</p>
+          <div class="chips"><span class="chip">The Indian Choral Ensemble</span><span class="chip">El Fe</span><span class="chip">Pravin Saivi's Vocal Ensemble</span></div>
+          <p class="note">The latest one was written, sung, produced, mixed and mastered inside a cruise cabin between Mumbai and Goa, with no internet and a bad case of seasickness. <a href="https://www.instagram.com/reel/Dcwx2Tmz4v7/" target="_blank" rel="noopener">Watch it ↗</a></p>
+        </div>
+      </div>
+
+      <div class="chapter" id="a2" style="margin-top:clamp(64px,9vw,120px)">
+        <div class="side-tag"><div class="big">A2</div><div><div class="role">College Suggest</div><div class="when mono">Jul 2020 – Aug 2021</div></div></div>
+        <div>
+          <h3>Building an original IP on YouTube.</h3>
+          <p class="prose">As content strategist, my job was to turn an education brand into something people chose to watch. The answer was <b>Gurunaadhaa</b>, an animated infotainment series I conceptualised and directed, leading a four-person team. Sound design sat at the centre of every episode.</p>
+          <div style="margin-top:28px;display:flex;gap:12px;flex-wrap:wrap">
+            <a class="btn" href="https://youtube.com/playlist?list=PLFSvJj_Ckj0lfN296XK_rMNymhBhUY3A0" target="_blank" rel="noopener">▶ Watch Gurunaadhaa</a>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<div class="rule"></div>
+  <section class="section" id="side-b">
+    <div class="wrap">
+      <div class="chapter" id="b1">
+        <div class="side-tag"><div class="big">B1</div><div><div class="role">Offbeat Music Ventures</div><div class="when mono">Aug 2021 – Feb 2022</div></div></div>
+        <div>
+          <h3>I made sure the room worked so the records could happen.</h3>
+          <p class="prose">Studio manager at a Chennai recording studio. Scheduling, client coordination, vendors, hiring, accounts and artist relations. The right people, the right gear and the right ambience, ready to plug and play.</p>
+          <p class="prose dim">I wasn't on these records. These are sessions I coordinated.</p>
+          <div class="board">
+            <div class="board-head mono"><span>Session board · Offbeat, Chennai</span><span class="live">● Rec</span></div>
+            <ul>
+              <li><span>01</span>Ilaiyaraaja</li><li><span>02</span>Yuvan Shankar Raja</li><li><span>03</span>Anirudh Ravichander</li><li><span>04</span>Sid Sriram</li>
+              <li><span>05</span>Pradeep Kumar</li><li><span>06</span>Sean Roldan</li><li><span>07</span>Karthik</li><li><span>08</span>Amrit Ramnath</li>
+              <li><span>09</span>Dhee</li><li><span>10</span>Shashwat Sachdev</li><li><span>11</span>Avadhoot Gupte</li><li><span>12</span>Hesham Abdul Wahab</li>
+              <li><span>13</span>Ofro</li><li><span>14</span>SA Aravind</li><li><span>15</span>Rajkumar Mamidana</li><li><span>16</span>Abhishek &amp; Nirmal</li>
+            </ul>
+          </div>
+        </div>
+      </div>
 
-<section>
-  <h2>The studio floor</h2>
-  <p class="note">Studio Manager, Offbeat Music Ventures LLP, Chennai. Aug 2021 to Feb 2022. I ran scheduling, client coordination, vendor management, hiring and accounts. Sessions I coordinated during that time included work by:</p>
-  <p class="roster">
-    <span>Ilaiyaraaja</span><i>·</i><span>Yuvan Shankar Raja</span><i>·</i><span>Anirudh Ravichander</span><i>·</i><span>Sid Sriram</span><i>·</i><span>Pradeep Kumar</span><i>·</i><span>Sean Roldan</span><i>·</i><span>Karthik</span><i>·</i><span>Amrit Ramnath</span><i>·</i><span>Dhee</span><i>·</i><span>Shashwat Sachdev</span><i>·</i><span>Avadhoot Gupte</span><i>·</i><span>Hesham Abdul Wahab</span><i>·</i><span>Ofro</span><i>·</i><span>SA Aravind</span><i>·</i><span>Rajkumar Mamidana</span><i>·</i><span>Abhishek &amp; Nirmal</span>
-  </p>
-  <p class="pull">I was not on these records. I was the person who made sure the room, the crew, the schedule and the money worked so the records could happen. That is the job I know from the inside.</p>
-</section>
+      <div class="chapter" id="b2" style="margin-top:clamp(64px,9vw,120px)">
+        <div class="side-tag"><div class="big">B2</div><div><div class="role">Yaali DreamWorks</div><div class="when mono">Feb 2022 – present</div></div></div>
+        <div>
+          <h3>From one person to a production engine.</h3>
+          <p class="prose">Head of Production, working out of the Founder's Office. I built the content function from one person to 25+ core staff and 100+ freelancers, helped build seven in-house recording booths, and owned budgets, casting and delivery on the production side.</p>
+          <div class="stats">
+            <div class="stat"><b>460</b><span>titles shipped</span></div>
+            <div class="stat"><b>3,000+</b><span>hours of audio</span></div>
+            <div class="stat"><b>25+</b><span>core team built</span></div>
+            <div class="stat"><b>7</b><span>booths built</span></div>
+          </div>
 
-<div class="rule"></div>
+          <div class="console" id="console">
+            <div class="console-top mono"><span>Catalogue by format · titles</span><span>Master: 460</span></div>
+            <div class="strips" id="strips"></div>
+          </div>
 
-<section>
-  <h2>The catalogue</h2>
-  <p class="note">Head of Production and Chief of Staff to the Founder, Yaali DreamWorks, Chennai. Feb 2022 to present. Built the content function from one person to 25+ core staff and 100+ freelancers, helped build seven in-house recording booths, and owned budgets, casting and delivery. 460 titles shipped and logged. Alongside that, I worked directly with the founder on company strategy: I initiated the pivot from B2B services into a proprietary product, and owned the market research and investor narrative behind it, presenting to an investor syndicate and to angel investors.</p>
+          <div class="meters">
+            <div class="meter-box"><h4 class="mono">Languages · titles</h4><div id="langs"></div></div>
+            <div class="meter-box"><h4 class="mono">Shipped for</h4>
+              <div class="chips"><span class="chip">KukuFM</span><span class="chip">KukuTV</span><span class="chip">KukuGuru</span><span class="chip">Pratilipi FM</span><span class="chip">QuickTV</span></div>
+              <p class="prose dim" style="margin-top:16px;font-size:.95rem">Music production and sound design were a big part of the first two years, and sound design stayed core to every original after that.</p>
+            </div>
+          </div>
 
-  <div class="split">
-    <div class="cat">
-      <div class="bar-row"><span>Audio series</span><span class="bar-track"><span class="bar-fill" style="width:100%"></span></span><span>103</span></div>
-      <div class="bar-row"><span>Microdrama dub</span><span class="bar-track"><span class="bar-fill" style="width:65%"></span></span><span>67</span></div>
-      <div class="bar-row"><span>Book summaries</span><span class="bar-track"><span class="bar-fill" style="width:58%"></span></span><span>60</span></div>
-      <div class="bar-row"><span>Full books</span><span class="bar-track"><span class="bar-fill" style="width:53%"></span></span><span>55</span></div>
-      <div class="bar-row"><span>Originals, non-fiction</span><span class="bar-track"><span class="bar-fill" style="width:48%"></span></span><span>49</span></div>
-      <div class="bar-row"><span>Infotainment video</span><span class="bar-track"><span class="bar-fill" style="width:47%"></span></span><span>48</span></div>
-      <div class="bar-row"><span>Podcasts, docs, other</span><span class="bar-track"><span class="bar-fill" style="width:18%"></span></span><span>18</span></div>
+          <p class="prose" style="margin-top:34px">Alongside production, I worked directly with the founder on strategy. I initiated the pivot from B2B services into a proprietary product, owned the market research and investor narrative behind it, and presented to an investor syndicate and to angel investors.</p>
+        </div>
+      </div>
     </div>
-    <div class="cat">
-      <div class="bar-row"><span>Tamil</span><span class="bar-track"><span class="bar-fill alt" style="width:100%"></span></span><span>371</span></div>
-      <div class="bar-row"><span>Hindi</span><span class="bar-track"><span class="bar-fill alt" style="width:9%"></span></span><span>13</span></div>
-      <div class="bar-row"><span>Telugu</span><span class="bar-track"><span class="bar-fill alt" style="width:8%"></span></span><span>11</span></div>
-      <div class="bar-row"><span>Marathi</span><span class="bar-track"><span class="bar-fill alt" style="width:6%"></span></span><span>7</span></div>
-      <div class="bar-row"><span>Malayalam</span><span class="bar-track"><span class="bar-fill alt" style="width:5%"></span></span><span>5</span></div>
-      <div class="bar-row" style="padding-top:22px"><span>Clients</span><span style="font-size:.92rem;grid-column:2/4">KukuFM, KukuTV, KukuGuru, Pratilipi FM, QuickTV</span></div>
+  </section>
+
+  <section class="section" id="bonus">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Bonus tracks</h2>
+        <p>Things I build on the side to learn how products actually get made.</p>
+      </div>
+      <div class="bonus">
+        <a class="card" href="https://kadhal-three.vercel.app" target="_blank" rel="noopener">
+          <span class="k mono">2025 · Product</span><h4>Kadhal</h4>
+          <p>A dating product I designed and shipped end to end with no engineering background. The backend is currently unfunded, so the demo is partial.</p>
+          <span class="go">Open the demo ↗</span>
+        </a>
+        <a class="card" href="https://www.instagram.com/rohit.vasudevan" target="_blank" rel="noopener">
+          <span class="k mono">2026 · Writing</span><h4>The business of entertainment</h4>
+          <p>Short films decoding how the attention economy actually pays. In progress alongside PGP Bharat at Masters' Union.</p>
+          <span class="go">Follow along ↗</span>
+        </a>
+        <div class="card soon">
+          <span class="k mono">Coming soon</span><h4>Walk through this record</h4>
+          <p>A 3D, first-person version of this site. Six rooms, my songs playing as you explore.</p>
+        </div>
+      </div>
     </div>
-  </div>
+  </section>
 
-  <p class="pull">3,000+ hours of audio. Music production and sound design were a significant part of the first two years, and sound design stayed core to every original after that.</p>
-</section>
-
-<div class="rule"></div>
-
-<section>
-  <h2>Directed</h2>
-  <div class="credit">
-    <div class="yr">2020 – 2021</div>
-    <div>
-      <p class="ttl"><a href="https://youtube.com/playlist?list=PLFSvJj_Ckj0lfN296XK_rMNymhBhUY3A0">Gurunaadhaa</a></p>
-      <p class="sub">Animated infotainment series. Conceptualised and directed, leading a four-person team, at College Suggest.</p>
+  <section class="section" id="contact">
+    <div class="wrap liner">
+      <div>
+        <h2>Liner notes</h2>
+        <p class="say">Always up for a conversation about music, media and building things.</p>
+        <div class="edu mono">
+          <span>PGP Bharat · Masters' Union · 2026</span>
+          <span>Y Combinator Startup School · 2025</span>
+          <span>B.E. Electrical &amp; Electronics · Dhanalakshmi College of Engineering · 2017</span>
+        </div>
+      </div>
+      <ul class="contact">
+        <li><span class="k mono">Email</span><span class="v"><a href="mailto:rohitsrinivasanv@gmail.com">rohitsrinivasanv@gmail.com</a></span><button class="copy" type="button" data-copy="rohitsrinivasanv@gmail.com">Copy</button></li>
+        <li><span class="k mono">Phone</span><span class="v"><a href="tel:+919677182573">+91 96771 82573</a></span><button class="copy" type="button" data-copy="+919677182573">Copy</button></li>
+        <li><span class="k mono">LinkedIn</span><span class="v"><a href="https://www.linkedin.com/in/rohit-srinivasan-v/" target="_blank" rel="noopener">rohit-srinivasan-v ↗</a></span></li>
+        <li><span class="k mono">Instagram</span><span class="v"><a href="https://www.instagram.com/not_that_rohit_anymore" target="_blank" rel="noopener">not_that_rohit_anymore ↗</a></span></li>
+      </ul>
     </div>
-  </div>
-  <div class="credit">
-    <div class="yr">2025</div>
-    <div>
-      <p class="ttl"><a href="https://kadhal-three.vercel.app">Kadhal</a></p>
-      <p class="sub">A dating product I designed and shipped end to end with no engineering background, to learn how software actually gets built. Backend is currently unfunded, so the demo is partial.</p>
-    </div>
-  </div>
-  <div class="credit">
-    <div class="yr">2026 –</div>
-    <div>
-      <p class="ttl"><a href="https://www.instagram.com/rohit.vasudevan">Writing about the entertainment business</a></p>
-      <p class="sub">Short films decoding how the attention economy actually pays. Currently in progress alongside PGP Bharat at Masters' Union.</p>
-    </div>
-  </div>
-</section>
+  </section>
+</main>
 
-<div class="rule"></div>
+<footer><div class="wrap mono"><span>Recorded in Chennai</span><span>© 2026 Rohit Srinivasan V</span></div></footer>
 
-<footer>
-  <div class="contact">
-    <a href="mailto:[EMAIL]">[EMAIL]</a>
-    <a href="tel:[PHONE]">[PHONE]</a>
-    <a href="https://www.linkedin.com/in/rohit-srinivasan-v">LinkedIn</a>
-    <a href="https://www.instagram.com/not_that_rohit_anymore">Instagram</a>
-  </div>
-  <p>B.E. Electrical and Electronics, Dhanalakshmi College of Engineering, 2013–2017. PGP Bharat, Masters' Union, 2026. Y Combinator Startup School, 2025.</p>
-</footer>
+<script>
+(function(){
+  // Console faders: catalogue by format
+  var fmt=[["Audio series",103],["Microdrama dubs",67],["Book summaries",60],["Full books",55],["Non-fiction originals",49],["Infotainment video",48],["Podcasts, docs, other",18]];
+  var max=103, strips=document.getElementById('strips');
+  fmt.forEach(function(f){
+    var pct=Math.round(f[1]/max*100);
+    var d=document.createElement('div');d.className='strip';
+    d.innerHTML='<span class="val">'+f[1]+'</span><div class="track" style="--h:'+pct+'%"><div class="fill"></div><div class="cap"></div></div><span class="lab">'+f[0]+'</span>';
+    strips.appendChild(d);
+  });
+  // Language meters, 24 segments, scaled to Tamil
+  var langs=[["Tamil",371],["Hindi",13],["Telugu",11],["Marathi",7],["Malayalam",5]], L=document.getElementById('langs');
+  langs.forEach(function(l){
+    var on=Math.max(1,Math.round(l[1]/371*24)), segs='';
+    for(var i=0;i<24;i++) segs+='<i class="'+(i<on?'on'+(i>=20?' hot':''):'')+'"></i>';
+    var r=document.createElement('div');r.className='mrow';
+    r.innerHTML='<span>'+l[0]+'</span><span class="segs">'+segs+'</span><span class="n">'+l[1]+'</span>';
+    L.appendChild(r);
+  });
 
-</div>
+  // Record: spins and plays a lo-fi loop made live with Web Audio, with vinyl crackle on top
+  var deck=document.getElementById('deck'), btn=document.getElementById('drop');
+  var ctx=null, master=null, noiseBuf=null, crackSrc=null, timer=null, nextT=0, step=0;
+  var BPM=76, EIGHTH=60/BPM/2;
+  function mtof(m){return 440*Math.pow(2,(m-69)/12)}
+  // Fmaj7 · Em7 · Dm9 · Cmaj7, one bar each
+  var CHORDS=[[53,57,60,64],[52,55,59,62],[50,53,57,60,64],[48,52,55,59]];
+  var MELODY=[[76,null,74,null,72,null,69,null],[71,null,null,72,74,null,71,null],[69,null,72,null,74,76,null,null],[71,null,67,null,64,null,null,null]];
+  function ensureCtx(){
+    if(ctx) return;
+    ctx=new (window.AudioContext||window.webkitAudioContext)();
+    var lp=ctx.createBiquadFilter();lp.type='lowpass';lp.frequency.value=2600;
+    master=ctx.createGain();master.gain.value=0;
+    master.connect(lp).connect(ctx.destination);
+    var len=ctx.sampleRate*4;noiseBuf=ctx.createBuffer(1,len,ctx.sampleRate);var d=noiseBuf.getChannelData(0);
+    for(var i=0;i<len;i++){var n=(Math.random()*2-1)*0.01;if(Math.random()<0.0008)n+=(Math.random()*2-1)*0.45;d[i]=n}
+  }
+  function keys(m,t,dur,vel){
+    [[1,'sine',1],[2,'triangle',.18]].forEach(function(p){
+      var o=ctx.createOscillator(),g=ctx.createGain();
+      o.type=p[1];o.frequency.value=mtof(m)*p[0];o.detune.value=(Math.random()-.5)*8;
+      g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vel*p[2],t+.012);g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+      o.connect(g).connect(master);o.start(t);o.stop(t+dur+.05);
+    });
+  }
+  function bass(m,t,dur){
+    var o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.value=mtof(m-12);
+    g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.32,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+    o.connect(g).connect(master);o.start(t);o.stop(t+dur+.05);
+  }
+  function kick(t){
+    var o=ctx.createOscillator(),g=ctx.createGain();o.frequency.setValueAtTime(110,t);o.frequency.exponentialRampToValueAtTime(42,t+.18);
+    g.gain.setValueAtTime(.55,t);g.gain.exponentialRampToValueAtTime(.0001,t+.32);o.connect(g).connect(master);o.start(t);o.stop(t+.35);
+  }
+  function noiseHit(t,type,freq,vol,dur){
+    var s=ctx.createBufferSource();s.buffer=noiseBuf;var f=ctx.createBiquadFilter();f.type=type;f.frequency.value=freq;
+    var g=ctx.createGain();g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+    s.connect(f).connect(g).connect(master);s.start(t,Math.random()*3);s.stop(t+dur+.02);
+  }
+  function schedule(){
+    while(nextT<ctx.currentTime+.25){
+      var bar=Math.floor(step/8)%4, e=step%8, t=nextT+(e%2?EIGHTH*.12:0); // a little swing
+      if(e===0){CHORDS[bar].forEach(function(m,i){keys(m,t+i*.012,EIGHTH*7,.07)});bass(CHORDS[bar][0],t,EIGHTH*3)}
+      if(e===5) bass(CHORDS[bar][0]+7,t,EIGHTH*2);
+      if(e===0||e===5) kick(t);
+      if(e===2||e===6) noiseHit(t,'bandpass',1800,.9,.16);
+      if(e%2===1) noiseHit(t,'highpass',7000,.35,.05);
+      var mel=MELODY[bar][e]; if(mel && (Math.floor(step/32)%2===1)) keys(mel,t,EIGHTH*3,.05);
+      nextT+=EIGHTH;step++;
+    }
+  }
+  function start(){
+    ensureCtx(); if(ctx.state==='suspended') ctx.resume();
+    crackSrc=ctx.createBufferSource();crackSrc.buffer=noiseBuf;crackSrc.loop=true;crackSrc.connect(master);crackSrc.start();
+    master.gain.cancelScheduledValues(ctx.currentTime);master.gain.setValueAtTime(0,ctx.currentTime);master.gain.linearRampToValueAtTime(.8,ctx.currentTime+1.2);
+    nextT=ctx.currentTime+.9;step=0; // needle lands, then the music starts
+    timer=setInterval(schedule,40);
+  }
+  function stop(){
+    clearInterval(timer);timer=null;
+    master.gain.cancelScheduledValues(ctx.currentTime);master.gain.setValueAtTime(master.gain.value,ctx.currentTime);master.gain.linearRampToValueAtTime(0,ctx.currentTime+.5);
+    var c=crackSrc;setTimeout(function(){try{c.stop()}catch(e){}},600);crackSrc=null;
+  }
+  btn.addEventListener('click',function(){
+    var playing=deck.classList.toggle('playing');
+    btn.setAttribute('aria-pressed',playing);
+    btn.textContent=playing?'❚❚ Lift the needle':'▶ Drop the needle';
+    try{ playing?start():stop() }catch(e){}
+  });
+
+  // Copy buttons
+  document.querySelectorAll('.copy').forEach(function(b){
+    b.addEventListener('click',function(){
+      var t=b.getAttribute('data-copy');
+      function done(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy'},1500)}
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){b.textContent=t})}else{b.textContent=t}
+    });
+  });
+})();
+</script>
+
 </body>
 </html>

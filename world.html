@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Rohit Srinivasan V · Walk the record</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anybody:wdth,wght@50..150,300..900&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#f4efe6;--dim:#b9b1a3;--acc:#ffb347;--bg:#0d0b0a}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--ink);font-family:Figtree,system-ui,sans-serif;-webkit-user-select:none;user-select:none;touch-action:none}
+  canvas#c{position:fixed;inset:0;width:100%;height:100%;display:block;cursor:grab}
+  canvas#c:active{cursor:grabbing}
+  .mono{font-family:"JetBrains Mono",monospace;letter-spacing:.04em}
+  a{color:var(--acc)}
+  /* intro */
+  #intro{position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:24px;
+    background:radial-gradient(ellipse at 30% 20%,#3a1f2e 0%,#120d10 55%,#070606 100%)}
+  #intro .wrap{max-width:560px;width:100%}
+  #intro .tag{font-size:12px;color:var(--acc);text-transform:uppercase}
+  #intro h1{font-family:Anybody,sans-serif;font-weight:900;font-stretch:130%;font-size:clamp(40px,10vw,76px);line-height:.92;margin:14px 0 14px;letter-spacing:-.01em}
+  #intro p.lead{font-size:clamp(17px,4.4vw,21px);color:var(--ink);line-height:1.4}
+  #intro p.lead em{color:var(--acc);font-style:normal}
+  #intro ul{list-style:none;margin:22px 0 26px;display:grid;gap:8px;font-size:14px;color:var(--dim)}
+  #intro ul b{color:var(--ink);font-weight:600}
+  #enter{appearance:none;border:0;background:var(--acc);color:#1a0f05;font:700 17px Figtree,sans-serif;padding:15px 26px;border-radius:999px;cursor:pointer}
+  #enter:disabled{opacity:.5;cursor:wait}
+  #intro .alt{display:inline-block;margin-left:16px;font-size:14px;color:var(--dim)}
+  #intro .alt a{color:var(--dim)}
+  .only-touch{display:none}.only-mouse{display:list-item}
+  @media (hover:none) and (pointer:coarse){.only-touch{display:list-item}.only-mouse{display:none}}
+  /* hud */
+  #hud{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;justify-content:space-between;align-items:flex-start;padding:14px 14px 0;pointer-events:none}
+  #zone{pointer-events:none}
+  #zone .k{font-size:11px;color:var(--acc);text-transform:uppercase}
+  #zone .n{font-family:Anybody,sans-serif;font-weight:800;font-stretch:120%;font-size:20px;margin-top:2px;text-shadow:0 2px 12px rgba(0,0,0,.6)}
+  #btns{display:flex;gap:8px;pointer-events:auto}
+  .hb{appearance:none;border:1px solid rgba(255,255,255,.22);background:rgba(15,12,10,.6);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:var(--ink);
+    font:600 13px Figtree,sans-serif;padding:9px 13px;border-radius:999px;cursor:pointer}
+  /* card */
+  #card{position:fixed;z-index:11;right:18px;bottom:18px;width:min(420px,calc(100vw - 36px));max-height:min(62vh,560px);overflow:auto;
+    background:rgba(16,13,11,.86);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:18px 18px 16px;
+    transform:translateY(12px);opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;-webkit-user-select:text;user-select:text;touch-action:pan-y}
+  #card.on{opacity:1;transform:none;pointer-events:auto}
+  #card .k{font-size:11px;color:var(--acc);text-transform:uppercase}
+  #card h3{font-family:Anybody,sans-serif;font-weight:800;font-stretch:112%;font-size:21px;line-height:1.12;margin:6px 0 10px}
+  #card .b{font-size:15px;line-height:1.5;color:#e7e0d4}
+  #card .b p+p{margin-top:9px}
+  #card .b .stats{display:flex;flex-wrap:wrap;gap:14px;margin:10px 0 4px}
+  #card .b .stats div{min-width:76px}
+  #card .b .stats b{display:block;font-family:Anybody,sans-serif;font-weight:800;font-size:24px;color:var(--ink)}
+  #card .b .stats span{font-size:12px;color:var(--dim)}
+  #card .b ul{margin:8px 0 0 18px}
+  #card .b li{margin:3px 0}
+  #card .b .note{font-size:13px;color:var(--dim)}
+  #card .b .links{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+  #card .b .links a,#card .b button{display:inline-block;text-decoration:none;font:600 13px Figtree,sans-serif;color:#1a0f05;background:var(--acc);padding:8px 13px;border-radius:999px;border:0;cursor:pointer}
+  #card .b button.ghost{background:transparent;color:var(--ink);border:1px solid rgba(255,255,255,.3)}
+  #card .b .trk{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0;border-top:1px solid rgba(255,255,255,.1)}
+  #card .b .trk:first-child{border-top:0}
+  #card .b .trk small{display:block;color:var(--dim);font-size:12px}
+  #card .b .trk .slot{font-size:11px;color:var(--dim);border:1px dashed rgba(255,255,255,.3);padding:4px 8px;border-radius:999px;white-space:nowrap}
+  #card .b .trk button{padding:6px 11px;font-size:12px}
+  @media (max-width:640px){#card{bottom:12px;right:12px;left:12px;width:auto;max-height:40vh;padding:14px 15px}#card h3{font-size:18px}#card .b{font-size:14px}#hint{bottom:auto;top:70px}}
+  /* menu */
+  #menu{position:fixed;inset:0;z-index:15;background:rgba(8,6,5,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:20px}
+  #menu.on{display:flex}
+  #menu .box{width:min(440px,100%);background:#15110f;border:1px solid rgba(255,255,255,.14);border-radius:18px;padding:18px}
+  #menu h2{font-family:Anybody,sans-serif;font-weight:800;font-stretch:120%;font-size:22px;margin-bottom:10px}
+  #menu button.go{display:flex;width:100%;justify-content:space-between;align-items:baseline;gap:10px;appearance:none;background:none;border:0;border-top:1px solid rgba(255,255,255,.08);color:var(--ink);
+    font:600 16px Figtree,sans-serif;padding:12px 4px;cursor:pointer;text-align:left}
+  #menu button.go span{font:400 12px "JetBrains Mono",monospace;color:var(--dim)}
+  #menu button.go:hover{color:var(--acc)}
+  #menu .foot{display:flex;justify-content:space-between;margin-top:12px;font-size:13px}
+  #menu .foot a{color:var(--dim)}
+  /* joystick */
+  #joy{position:fixed;z-index:9;width:110px;height:110px;border-radius:50%;border:2px solid rgba(255,255,255,.35);background:rgba(255,255,255,.06);display:none;pointer-events:none;transform:translate(-50%,-50%)}
+  #joy i{position:absolute;left:50%;top:50%;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;background:rgba(255,179,71,.85)}
+  #hint{position:fixed;z-index:9;left:50%;bottom:18px;transform:translateX(-50%);font-size:12px;color:var(--dim);background:rgba(10,8,7,.6);padding:7px 12px;border-radius:999px;transition:opacity .6s;pointer-events:none;white-space:nowrap}
+  #err{position:fixed;inset:0;z-index:30;display:none;align-items:center;justify-content:center;text-align:center;padding:30px;background:#0d0b0a}
+</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<div id="intro">
+  <div class="wrap">
+    <div class="tag mono">Rohit Srinivasan V · Chennai</div>
+    <h1>Walk the record.</h1>
+    <p class="lead">Musician turned operator. Nine years in Tamil music and media, laid out as <em>six rooms</em>, in the order they happened.</p>
+    <ul>
+      <li class="only-mouse"><b>Walk</b> with W A S D or the arrow keys</li>
+      <li class="only-mouse"><b>Look</b> by dragging with the mouse</li>
+      <li class="only-touch"><b>Walk</b> by holding your left thumb anywhere on the left side</li>
+      <li class="only-touch"><b>Look</b> by dragging on the right side</li>
+      <li><b>Read</b> by walking up to anything that glows. <b>Rooms</b> menu jumps anywhere.</li>
+    </ul>
+    <button id="enter" disabled>Loading the world…</button>
+    <span class="alt">or <a href="https://rohitsrinivasanv.vercel.app">read the classic site</a></span>
+  </div>
+</div>
+
+<div id="hud">
+  <div id="zone"><div class="k mono" id="zk">Entrance</div><div class="n" id="zn">Rohit Srinivasan V</div></div>
+  <div id="btns"><button class="hb" id="snd">Sound on</button><button class="hb" id="rooms">Rooms</button></div>
+</div>
+
+<div id="card"><div class="k mono" id="ck"></div><h3 id="ch"></h3><div class="b" id="cb"></div></div>
+
+<div id="menu"><div class="box">
+  <h2>Jump to a room</h2>
+  <div id="golist"></div>
+  <div class="foot"><a href="https://rohitsrinivasanv.vercel.app">Classic site</a><a href="#" id="closemenu">Close</a></div>
+</div></div>
+
+<div id="joy"><i></i></div>
+<div id="hint">Walk up to anything that glows</div>
+<div id="err"><div><h2 style="font-family:Anybody;margin-bottom:10px">This device can't draw the 3D world.</h2><p>Here's the <a href="https://rohitsrinivasanv.vercel.app">classic site</a> instead.</p></div></div>
+
+<script type="module">
+import * as THREE from 'three';
+
+/* =========================================================
+   CONTENT. Edit here. Files go in /assets/<room>/ in the repo.
+   ========================================================= */
+const TRACKS = [
+  // file: '' means the slot shows as "coming soon". Add e.g. 'assets/music/manidham.mp3'
+  {title:'Manidham (OST)', note:'Released 2020 · written, composed, performed', file:'', link:'https://open.spotify.com/track/6tI7f8tlMys2HMq30ruaOG'},
+  {title:'Plant Man', note:'Released 2023 · single with Ananda Balaji', file:'', link:'https://open.spotify.com/album/29JtOcECP89ox07b8cWFPz'},
+  {title:'Cutie Pie', note:'Released 2025 · with Pavani Vasa', file:'', link:'https://open.spotify.com/track/6RyR5byHonBXnPrff59rbz'},
+  // TRACK SLOTS 04 to 20: add released and unreleased tracks here
+];
+const TRACK_SLOTS = 20;
+const SHOW_SLOTS = 12; // Yaali thumbnails: add images as assets/yaali/show-01.jpg ... and list them below
+const SHOWS = []; // e.g. {title:'Show name', img:'assets/yaali/show-01.jpg'}
+
+/* ========================================================= */
+
+try{ await Promise.race([Promise.all(['900 40px Anybody','800 40px Anybody','500 40px Figtree','600 40px Figtree','600 30px "JetBrains Mono"'].map(f=>document.fonts.load(f))), new Promise(r=>setTimeout(r,3000))]); }catch(e){}
+
+const canvas = document.getElementById('c');
+let renderer;
+try { renderer = new THREE.WebGLRenderer({canvas, antialias:true, powerPreference:'high-performance'}); }
+catch(e){ document.getElementById('err').style.display='flex'; throw e; }
+renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, 1.75));
+renderer.setSize(innerWidth, innerHeight, false);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.15;
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color('#0b0908');
+scene.fog = new THREE.Fog('#0b0908', 26, 75);
+const camera = new THREE.PerspectiveCamera(72, innerWidth/innerHeight, 0.05, 140);
+camera.rotation.order = 'YXZ';
+const EYE = 1.62;
+const player = {x:0, z:3.2, yaw:0, pitch:-0.02};
+
+scene.add(new THREE.HemisphereLight('#fff4e6', '#3a302c', 2.4));
+
+/* ---------- helpers ---------- */
+const lam = (c, e) => new THREE.MeshLambertMaterial({color:c, emissive:e||'#000'});
+function box(w,h,d,mat,x,y,z){ const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat); m.position.set(x,y,z); scene.add(m); return m; }
+function cyl(rt,rb,h,mat,x,y,z,seg=24){ const m=new THREE.Mesh(new THREE.CylinderGeometry(rt,rb,h,seg),mat); m.position.set(x,y,z); scene.add(m); return m; }
+function plight(color,int,x,y,z,dist=22){ const l=new THREE.PointLight(color,int,dist,1.3); l.position.set(x,y,z); scene.add(l); return l; }
+
+const MAXTEX = 2048;
+function panel(w,h,draw,{px=220,opaque=true}={}){
+  const s = Math.min(px, MAXTEX/Math.max(w,h));
+  const cw=Math.round(w*s), ch=Math.round(h*s);
+  const c=document.createElement('canvas'); c.width=cw; c.height=ch;
+  const g=c.getContext('2d'); draw(g,cw,ch,s);
+  const t=new THREE.CanvasTexture(c); t.colorSpace=THREE.SRGBColorSpace; t.anisotropy=renderer.capabilities.getMaxAnisotropy?Math.min(8,renderer.capabilities.getMaxAnisotropy()):4;
+  const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h), new THREE.MeshBasicMaterial({map:t, transparent:!opaque, toneMapped:false}));
+  return m;
+}
+// facing: '+x','-x','+z','-z'
+const FACE = {'+x':Math.PI/2,'-x':-Math.PI/2,'+z':0,'-z':Math.PI};
+function put(m,x,y,z,face){ m.position.set(x,y,z); m.rotation.y=FACE[face]; scene.add(m); return m; }
+
+function T(g,s,x,y,font,color,align='left',base='top'){ g.font=font; g.fillStyle=color; g.textAlign=align; g.textBaseline=base; g.fillText(s,x,y); }
+function wrap(g,s,x,y,maxW,lh,font,color,align='left'){
+  g.font=font; g.fillStyle=color; g.textAlign=align; g.textBaseline='top';
+  const words=s.split(' '); let line='';
+  for(const w of words){ const t=line?line+' '+w:w; if(g.measureText(t).width>maxW && line){ g.fillText(line,x,y); y+=lh; line=w; } else line=t; }
+  if(line){ g.fillText(line,x,y); y+=lh; }
+  return y;
+}
+const F = (wt,px,fam='Figtree') => `${wt} ${px}px ${fam === 'A' ? 'Anybody' : fam === 'M' ? '"JetBrains Mono"' : 'Figtree'}`;
+
+/* ---------- walkable areas (already inset for body radius) ---------- */
+const walk=[]; const addWalk=(x0,x1,z0,z1)=>walk.push({x0,x1,z0,z1});
+const canStand=(x,z)=>walk.some(r=>x>r.x0&&x<r.x1&&z>r.z0&&z<r.z1);
+
+/* ---------- walls with door gaps ---------- */
+function wallAlongZ(x,z0,z1,H,mat,gaps=[],t=0.2){
+  let cur=z0; const gs=[...gaps].sort((a,b)=>a.c-b.c);
+  for(const g of gs){ const a=g.c-g.w/2, b=g.c+g.w/2;
+    if(a>cur) box(t,H,a-cur,mat,x,H/2,(cur+a)/2);
+    box(t,H-g.h,g.w,mat,x,g.h+(H-g.h)/2,g.c); cur=b; }
+  if(z1>cur) box(t,H,z1-cur,mat,x,H/2,(cur+z1)/2);
+}
+function wallAlongX(z,x0,x1,H,mat,t=0.2){ box(x1-x0,H,t,mat,(x0+x1)/2,H/2,z); }
+
+/* ---------- layout ---------- */
+const HALL={x0:-3,x1:3,z0:-82,z1:6,H:4.2};
+const DOOR={w:3,h:3};
+const ROOMS=[
+  {id:'music',  side:'L', c:-10, k:'A1 · 2017–20', n:'Singer-songwriter', wall:'#2b1630', floor:'#3b2416', ceil:'#1a0d1c', light:'#ffb070', pad:[220,261.6,329.6,392,493.9]},
+  {id:'college',side:'R', c:-22, k:'A2 · 2020–21', n:'College Suggest', wall:'#ece3cf', floor:'#2f5d62', ceil:'#f3ecdc', light:'#fff1d6', pad:[174.6,220,261.6,329.6]},
+  {id:'offbeat',side:'L', c:-34, k:'B1 · 2021–22', n:'Offbeat Music Ventures', wall:'#1d1f24', floor:'#24262b', ceil:'#121316', light:'#ff5a4e', pad:[146.8,174.6,220,293.7]},
+  {id:'yaali',  side:'R', c:-46, k:'B2 · 2022–now', n:'Yaali DreamWorks', wall:'#1d2433', floor:'#17181c', ceil:'#101319', light:'#ffd9a0', pad:[155.6,196,233.1,293.7,392]},
+  {id:'labs',   side:'L', c:-58, k:'Bonus · side builds', n:'The Labs', wall:'#0c1012', floor:'#0a0d0f', ceil:'#06080a', light:'#3dffb5', pad:[130.8,196,261.6,392]},
+  {id:'pgp',    side:'R', c:-70, k:'2026', n:'PGP Bharat', wall:'#c9744b', floor:'#e8dcc4', ceil:'#f1e7d2', light:'#fff0d8', pad:[196,246.9,293.7,370]},
+];
+const RW=14, RD=14, RH=4.6;
+ROOMS.forEach(r=>{
+  r.x0 = r.side==='L' ? HALL.x0-RW : HALL.x1;
+  r.x1 = r.side==='L' ? HALL.x0 : HALL.x1+RW;
+  r.z0 = r.c-RD/2; r.z1 = r.c+RD/2;
+  r.cx = (r.x0+r.x1)/2;
+  r.inward = r.side==='L' ? '+x' : '-x'; // direction a wall on the far side faces
+});
+
+/* hall */
+const hallWall = lam('#2a2421');
+const hallFloor = new THREE.Mesh(new THREE.PlaneGeometry(6,HALL.z1-HALL.z0), lam('#1b1614'));
+hallFloor.rotation.x=-Math.PI/2; hallFloor.position.set(0,0,(HALL.z0+HALL.z1)/2); scene.add(hallFloor);
+// runner carpet
+const runner = new THREE.Mesh(new THREE.PlaneGeometry(2.2,HALL.z1-HALL.z0-2), lam('#5a2a1f'));
+runner.rotation.x=-Math.PI/2; runner.position.set(0,0.005,(HALL.z0+HALL.z1)/2); scene.add(runner);
+const hallCeil = new THREE.Mesh(new THREE.PlaneGeometry(6,HALL.z1-HALL.z0), lam('#120f0e'));
+hallCeil.rotation.x=Math.PI/2; hallCeil.position.set(0,HALL.H,(HALL.z0+HALL.z1)/2); scene.add(hallCeil);
+wallAlongZ(HALL.x0,HALL.z0,HALL.z1,HALL.H,hallWall,ROOMS.filter(r=>r.side==='L').map(r=>({c:r.c,...DOOR})));
+wallAlongZ(HALL.x1,HALL.z0,HALL.z1,HALL.H,hallWall,ROOMS.filter(r=>r.side==='R').map(r=>({c:r.c,...DOOR})));
+wallAlongX(HALL.z0,HALL.x0,HALL.x1,HALL.H,hallWall);
+wallAlongX(HALL.z1,HALL.x0,HALL.x1,HALL.H,hallWall);
+addWalk(HALL.x0+0.4,HALL.x1-0.4,HALL.z0+0.4,HALL.z1-0.4);
+// ceiling light strips + lights
+const stripMat = new THREE.MeshBasicMaterial({color:'#ffd9a8'});
+for(let z=HALL.z1-4; z>HALL.z0; z-=6){ box(0.18,0.04,3.2,stripMat,0,HALL.H-0.03,z); }
+for(let z=-14; z>HALL.z0; z-=40){ plight('#ffcf9a',22,0,3.8,z,34); }
+
+/* rooms */
+ROOMS.forEach(r=>{
+  const wm=lam(r.wall), fm=lam(r.floor), cm=lam(r.ceil);
+  const fl=new THREE.Mesh(new THREE.PlaneGeometry(RW,RD),fm); fl.rotation.x=-Math.PI/2; fl.position.set(r.cx,0.002,r.c); scene.add(fl); r.floorMesh=fl;
+  const ce=new THREE.Mesh(new THREE.PlaneGeometry(RW,RD),cm); ce.rotation.x=Math.PI/2; ce.position.set(r.cx,RH,r.c); scene.add(ce);
+  const far = r.side==='L' ? r.x0 : r.x1;
+  const near = r.side==='L' ? r.x1-0.15 : r.x0+0.15;
+  wallAlongZ(far,r.z0,r.z1,RH,wm);
+  wallAlongZ(near,r.z0,r.z1,RH,wm,[{c:r.c,...DOOR}],0.1);
+  wallAlongX(r.z0,r.x0,r.x1,RH,wm);
+  wallAlongX(r.z1,r.x0,r.x1,RH,wm);
+  // filler above hall wall inside room height
+  addWalk(r.x0+0.4,r.x1-0.4,r.z0+0.4,r.z1-0.4);
+  const dx0 = r.side==='L' ? r.x1-0.8 : r.x0-0.8, dx1 = r.side==='L' ? r.x1+0.8 : r.x0+0.8;
+  addWalk(dx0,dx1,r.c-DOOR.w/2+0.4,r.c+DOOR.w/2-0.4);
+  // door frame glow
+  const fr = new THREE.MeshBasicMaterial({color:r.light});
+  const hx = r.side==='L'?HALL.x0+0.11:HALL.x1-0.11;
+  box(0.04,DOOR.h,0.08,fr,hx,DOOR.h/2,r.c-DOOR.w/2); box(0.04,DOOR.h,0.08,fr,hx,DOOR.h/2,r.c+DOOR.w/2); box(0.04,0.08,DOOR.w,fr,hx,DOOR.h,r.c);
+  // light
+  r.lights=[plight(r.light,30,r.cx,RH-0.4,r.c,28)];
+});
+
+/* ---------- door signs in the hall ---------- */
+ROOMS.forEach(r=>{
+  const sign = panel(3.4,0.95,(g,w,h)=>{
+    g.fillStyle='#0f0c0b'; g.fillRect(0,0,w,h);
+    g.fillStyle=r.light; g.fillRect(0,h-6,w,6);
+    T(g,r.k.toUpperCase(),24,22,F(600,30,'M'),r.light);
+    T(g,r.n,24,70,F(800,64,'A'),'#f4efe6');
+  });
+  const x = r.side==='L'?HALL.x0+0.13:HALL.x1-0.13;
+  put(sign,x,3.62,r.c, r.side==='L'?'+x':'-x');
+});
+
+/* ---------- exhibits ---------- */
+const exhibits=[];
+const glowMat = c => new THREE.MeshBasicMaterial({color:c, transparent:true, opacity:.55});
+function exhibit(o){ // {x,z,r,k,title,html,marker?}
+  o.r=o.r||2.6; exhibits.push(o);
+  if(o.marker!==false){ const ring=new THREE.Mesh(new THREE.RingGeometry(0.42,0.52,40), glowMat(o.color||'#ffb347')); ring.rotation.x=-Math.PI/2; ring.position.set(o.mx??o.x,0.02,o.mz??o.z); scene.add(ring); o.ring=ring; }
+}
+
+/* ===== ENTRANCE ===== */
+const banner = panel(5.6,1.5,(g,w,h)=>{
+  g.fillStyle='#0f0c0b'; g.fillRect(0,0,w,h);
+  T(g,'ROHIT SRINIVASAN V',30,26,F(600,30,'M'),'#ffb347');
+  T(g,'Musician turned operator.',28,72,F(900,96,'A'),'#f4efe6');
+  T(g,'Six rooms, in the order they happened. Walk in.',30,h-58,F(500,34),'#b9b1a3');
+});
+put(banner,0,3.25,-1.2,'+z');
+exhibit({x:0,z:1.6,r:2.2,k:'Entrance',title:'Nine years in Tamil music and media.',mz:-0.6,
+  html:`<p>From cutting my own records, to running a studio floor, to building a production company's engine room. Each room down this hall is one chapter, in order.</p>
+  <div class="stats"><div><b>200+</b><span>tracks sung</span></div><div><b>460</b><span>titles shipped</span></div><div><b>3,000+</b><span>hours of audio</span></div></div>
+  <p class="note">Doors on the left are Side A, on the right Side B. The Labs and PGP Bharat are at the far end. The hall ends at the liner notes.</p>`});
+
+/* ===== A1 MUSIC ===== */
+{
+  const r=ROOMS[0], X0=r.x0, X1=r.x1, cz=r.c; // left room, far wall x=X0
+  // stage on far wall
+  box(5,0.35,8,lam('#1a0f10'),X0+2.6,0.175,cz);
+  cyl(0.02,0.02,1.5,lam('#888'),X0+3.2,1.1,cz);
+  const mic=cyl(0.07,0.06,0.18,lam('#bbb','#222'),X0+3.2,1.9,cz);
+  // amp + speakers
+  box(0.9,1.2,0.6,lam('#121212'),X0+1.2,0.95,cz-2.8); box(0.9,1.2,0.6,lam('#121212'),X0+1.2,0.95,cz+2.8);
+  const bigSign = panel(6.5,2.1,(g,w,h)=>{
+    g.fillStyle='#160a17'; g.fillRect(0,0,w,h);
+    T(g,'A1 · NOV 2017 – JUL 2020',36,34,F(600,34,'M'),'#ff8fc7');
+    wrap(g,'Written, sung, produced, mixed and mastered by me.',36,90,w-72,92,F(900,84,'A'),'#ffe6c7');
+    T(g,'200+ tracks sung   ·   200+ lyrics written   ·   3 choral ensembles',36,h-70,F(500,38),'#d7b7c9');
+  });
+  put(bigSign,X0+0.12,3.1,cz,'+x');
+  exhibit({x:X0+5.2,z:cz,r:2.8,k:r.k,title:'Written, sung, produced, mixed and mastered by me.',color:'#ff8fc7',
+    html:`<p>Three years as a full-time singer-songwriter. Assistant to music director Naren Balakumar across three films, work with Anand Balaji and a long tail of independent composers, and music for <i>Malar</i> on Colors Tamil.</p>
+    <div class="stats"><div><b>200+</b><span>tracks sung</span></div><div><b>200+</b><span>lyrics written</span></div><div><b>3</b><span>choral ensembles</span></div></div>
+    <p class="note">Sang with The Indian Choral Ensemble, El Fe and Pravin Saivi's Vocal Ensemble.</p>`});
+
+  // record wall on z0 wall (faces +z)
+  const cols=5, rows=4, sz=1.15, gap=0.35, wallZ=r.z0+0.12;
+  const startX = r.cx-((cols-1)*(sz+gap))/2;
+  const arts=[['#ff6b3d','#3b0f4a'],['#2ec4b6','#0b2545'],['#ffd166','#7a1e48']];
+  for(let i=0;i<TRACK_SLOTS;i++){
+    const col=i%cols, row=Math.floor(i/cols);
+    const t=TRACKS[i];
+    const sl=panel(sz,sz,(g,w,h)=>{
+      if(t){ const [a,b]=arts[i%3]; const gr=g.createLinearGradient(0,0,w,h); gr.addColorStop(0,a); gr.addColorStop(1,b); g.fillStyle=gr; g.fillRect(0,0,w,h);
+        g.fillStyle='rgba(0,0,0,.25)'; g.beginPath(); g.arc(w*.68,h*.38,w*.26,0,7); g.fill();
+        g.fillStyle='rgba(255,255,255,.9)'; g.beginPath(); g.arc(w*.68,h*.38,w*.05,0,7); g.fill();
+        wrap(g,t.title,16,h-80,w-30,30,F(800,28,'A'),'#fff'); T(g,t.note.split('·')[0].trim().toUpperCase(),16,16,F(600,15,'M'),'rgba(255,255,255,.85)');
+      } else { g.fillStyle='#1d1020'; g.fillRect(0,0,w,h); g.setLineDash([10,8]); g.strokeStyle='rgba(255,200,230,.35)'; g.lineWidth=3; g.strokeRect(10,10,w-20,h-20);
+        T(g,'TRACK',w/2,h/2-26,F(600,22,'M'),'rgba(255,220,240,.55)','center'); T(g,String(i+1).padStart(2,'0'),w/2,h/2+6,F(800,40,'A'),'rgba(255,220,240,.7)','center'); }
+    });
+    put(sl,startX+col*(sz+gap),3.85-row*(sz+0.22),wallZ,'+z');
+  }
+  exhibit({x:r.cx,z:r.z0+3,r:2.8,k:'A1 · Record wall',title:'Released, and still to come.',color:'#ff8fc7',
+    html:`<p>Three releases on Spotify as Rohit Srinivasan, plus slots for the unreleased work that will hang here.</p>
+    <div class="links">${TRACKS.map(t=>`<a href="${t.link}" target="_blank" rel="noopener">${t.title} ↗</a>`).join('')}</div>`});
+
+  // turntable in centre
+  box(2.2,0.9,1.4,lam('#4a2c1a'),r.cx,0.45,cz);
+  box(1.6,0.12,1.1,lam('#1a1a1a'),r.cx,0.96,cz);
+  const vinyl=cyl(0.42,0.42,0.02,lam('#0a0a0a','#110811'),r.cx-0.15,1.04,cz,40);
+  const label=cyl(0.13,0.13,0.022,new THREE.MeshBasicMaterial({color:'#ff6b3d'}),r.cx-0.15,1.045,cz,24);
+  r.spin=[vinyl,label];
+  exhibit({x:r.cx+1.9,z:cz,mx:r.cx+1.9,r:2.2,k:'A1 · Turntable',title:'Shuffle play',color:'#ff8fc7',player:true,html:''});
+
+  // cruise story on z1 wall (faces -z)
+  const cruise = panel(4.6,2.2,(g,w,h)=>{
+    g.fillStyle='#0d1b2a'; g.fillRect(0,0,w,h);
+    for(let i=0;i<7;i++){ g.strokeStyle=`rgba(120,190,255,${.08+i*.03})`; g.lineWidth=3; g.beginPath(); for(let x=0;x<=w;x+=10){ const y=h*.72+i*12+Math.sin(x/38+i)*8; x?g.lineTo(x,y):g.moveTo(x,y);} g.stroke(); }
+    T(g,'THE LATEST ONE',30,30,F(600,26,'M'),'#8fd0ff');
+    wrap(g,'Made inside a cruise cabin between Mumbai and Goa. No internet. Seasick.',30,74,w-60,62,F(800,52,'A'),'#eaf6ff');
+  });
+  put(cruise,r.cx,2.3,r.z1-0.12,'-z');
+  exhibit({x:r.cx,z:r.z1-2.6,r:2.6,k:'A1 · Story',title:'The cruise cabin record.',color:'#8fd0ff',
+    html:`<p>The latest one was written, sung, produced, mixed and mastered inside a cruise cabin between Mumbai and Goa, with no internet and a bad case of seasickness.</p>
+    <div class="links"><a href="https://www.instagram.com/reel/Dcwx2Tmz4v7/" target="_blank" rel="noopener">Watch it ↗</a></div>`});
+}
+
+/* ===== A2 COLLEGE SUGGEST ===== */
+{
+  const r=ROOMS[1], cz=r.c, X1=r.x1; // right room, far wall x=X1
+  // chalkboard far wall
+  const board = panel(8,2.6,(g,w,h)=>{
+    g.fillStyle='#24443a'; g.fillRect(0,0,w,h); g.strokeStyle='#8a6a43'; g.lineWidth=22; g.strokeRect(0,0,w,h);
+    T(g,'A2 · JUL 2020 – AUG 2021 · CONTENT STRATEGIST',50,46,F(600,30,'M'),'#cfe8d8');
+    wrap(g,'Building an original IP on YouTube.',50,100,w-100,104,F(900,92,'A'),'#f6f3e8');
+    wrap(g,'How do you turn an education brand into something people choose to watch?',50,h-120,w-100,48,F(500,40),'#d9ead9');
+  });
+  put(board,X1-0.12,2.5,cz,'-x');
+  exhibit({x:X1-3.2,z:cz,r:2.8,k:r.k,title:'Building an original IP on YouTube.',color:'#2f9e8a',
+    html:`<p>As content strategist, my job was to turn an education brand into something people chose to watch. The answer was <b>Gurunaadhaa</b>, an animated infotainment series I conceptualised and directed, leading a four-person team.</p>`});
+  // screen on z0 wall
+  const scr = panel(6,3.2,(g,w,h)=>{
+    const gr=g.createLinearGradient(0,0,w,h); gr.addColorStop(0,'#ff9f1c'); gr.addColorStop(1,'#c2185b'); g.fillStyle=gr; g.fillRect(0,0,w,h);
+    g.fillStyle='rgba(0,0,0,.18)'; g.fillRect(0,h*.62,w,h*.38);
+    T(g,'GURUNAADHAA',w/2,h*.2,F(900,120,'A'),'#fff8e8','center');
+    T(g,'an animated infotainment series',w/2,h*.2+140,F(500,40),'#fff3df','center');
+    g.fillStyle='#fff'; g.beginPath(); g.arc(w/2,h*.78,46,0,7); g.fill(); g.fillStyle='#c2185b'; g.beginPath(); g.moveTo(w/2-14,h*.78-24); g.lineTo(w/2+26,h*.78); g.lineTo(w/2-14,h*.78+24); g.fill();
+  });
+  put(scr,r.cx+0.5,2.4,r.z0+0.12,'+z');
+  box(6.3,3.5,0.08,lam('#111'),r.cx+0.5,2.4,r.z0+0.06);
+  exhibit({x:r.cx+0.5,z:r.z0+3,r:2.8,k:'A2 · Screening',title:'Gurunaadhaa',color:'#ff9f1c',
+    html:`<p>Conceptualised and directed by me, made by a four-person team. Sound design sat at the centre of every episode.</p><div class="links"><a href="https://youtube.com/playlist?list=PLFSvJj_Ckj0lfN296XK_rMNymhBhUY3A0" target="_blank" rel="noopener">▶ Watch Gurunaadhaa</a></div>`});
+  // desks
+  const dm=lam('#c9a77c'); for(let i=0;i<2;i++) for(let j=0;j<3;j++){ box(1.6,0.08,0.8,dm,r.cx-1.6+i*3.2,0.76,cz-2+j*2.6); box(0.06,0.76,0.7,dm,r.cx-2.35+i*3.2,0.38,cz-2+j*2.6); box(0.06,0.76,0.7,dm,r.cx-0.85+i*3.2,0.38,cz-2+j*2.6); }
+  // sound desk near z1 with headphones
+  box(2.4,0.9,1,lam('#3b3b3b'),r.cx,0.45,r.z1-1.2);
+  const hp=new THREE.Mesh(new THREE.TorusGeometry(0.22,0.035,10,30,Math.PI),lam('#ff9f1c')); hp.position.set(r.cx,1.12,r.z1-1.2); scene.add(hp);
+  exhibit({x:r.cx,z:r.z1-3,r:2.4,k:'A2 · Lesson',title:'Sound carries the story.',color:'#ff9f1c',
+    html:`<p>Coming from music, I treated sound as the spine of every episode, not a finishing touch. That habit followed me to every job after this one.</p>`});
+}
+
+/* ===== B1 OFFBEAT ===== */
+{
+  const r=ROOMS[2], cz=r.c, X0=r.x0;
+  // acoustic panels on z0/z1 walls
+  const pa=lam('#3a2d4a'), pb=lam('#2b3a4a');
+  for(let i=0;i<6;i++) for(let j=0;j<3;j++){ const m=(i+j)%2?pa:pb; box(1.6,1.0,0.12,m,r.x0+1.6+i*2.1,1.2+j*1.15,r.z0+0.16); box(1.6,1.0,0.12,m,r.x0+1.6+i*2.1,1.2+j*1.15,r.z1-0.16); }
+  // console
+  box(4,0.95,1.6,lam('#26201c'),r.cx,0.48,cz);
+  const top=new THREE.Mesh(new THREE.BoxGeometry(4,0.1,1.6),lam('#3a3330')); top.position.set(r.cx,1.02,cz); top.rotation.x=0; scene.add(top);
+  const fad=lam('#d8d2c8'), led=new THREE.MeshBasicMaterial({color:'#7dff9a'});
+  for(let i=0;i<20;i++){ box(0.06,0.05,0.18,fad,r.cx-1.8+i*0.19,1.1,cz+0.3); box(0.04,0.03,0.04,led,r.cx-1.8+i*0.19,1.09,cz-0.35); }
+  box(0.5,0.75,0.45,lam('#111'),r.cx-0.4,1.45,cz-2.4); box(0.5,0.75,0.45,lam('#111'),r.cx-0.4,1.45,cz+2.4);
+  // REC light
+  const rec=box(1.2,0.4,0.06,new THREE.MeshBasicMaterial({color:'#ff2d2d'}),r.x1-0.3,3.7,cz-3.2); rec.rotation.y=Math.PI/2; r.rec=rec;
+  exhibit({x:r.cx+2.6,z:cz,r:2.6,k:r.k,title:'I made sure the room worked so the records could happen.',color:'#ff5a4e',
+    html:`<p>Studio manager at a Chennai recording studio, Aug 2021 to Feb 2022. Scheduling, client coordination, vendors, hiring, accounts and artist relations. The right people, the right gear and the right ambience, ready to plug and play.</p>`});
+  // session board on far wall
+  const names=['Ilaiyaraaja','Yuvan Shankar Raja','Anirudh Ravichander','Sid Sriram','Pradeep Kumar','Sean Roldan','Karthik','Amrit Ramnath','Dhee','Shashwat Sachdev','Avadhoot Gupte','Hesham Abdul Wahab','Ofro','SA Aravind','Rajkumar Mamidana','Abhishek & Nirmal'];
+  const sb = panel(8,3.4,(g,w,h)=>{
+    g.fillStyle='#0f1012'; g.fillRect(0,0,w,h);
+    T(g,'SESSION BOARD · OFFBEAT, CHENNAI',40,36,F(600,30,'M'),'#ff5a4e');
+    g.fillStyle='#ff2d2d'; g.beginPath(); g.arc(w-60,54,14,0,7); g.fill(); T(g,'REC',w-84,40,F(600,28,'M'),'#ff8a80','right');
+    names.forEach((n,i)=>{ const col=i<8?0:1, row=i%8; const x=40+col*(w/2), y=110+row*76;
+      T(g,String(i+1).padStart(2,'0'),x,y,F(600,30,'M'),'#7d7f86'); T(g,n,x+70,y-6,F(800,46,'A'),'#efeae2'); });
+    T(g,"I wasn't on these records. These are sessions I coordinated.",40,h-56,F(500,32),'#a7a39c');
+  });
+  put(sb,X0+0.12,2.4,cz,'+x');
+  exhibit({x:X0+3.2,z:cz,r:2.8,k:'B1 · Session board',title:'Sessions I coordinated.',color:'#ff5a4e',
+    html:`<p>I wasn't on these records. I ran the room, the crew, the schedule and the money so they could happen.</p><p class="note">${names.join(' · ')}</p>`});
+}
+
+/* ===== B2 YAALI (executive office) ===== */
+{
+  const r=ROOMS[3], cz=r.c, X1=r.x1;
+  // window wall (skyline) on far wall
+  const sky = panel(12,3.6,(g,w,h)=>{
+    const gr=g.createLinearGradient(0,0,0,h); gr.addColorStop(0,'#0a1630'); gr.addColorStop(.7,'#24365e'); gr.addColorStop(1,'#d77a3b'); g.fillStyle=gr; g.fillRect(0,0,w,h);
+    let seed=7; const rnd=()=>((seed=(seed*16807)%2147483647)/2147483647);
+    for(let layer=0;layer<2;layer++){ let x=0; while(x<w){ const bw=40+rnd()*110, bh=h*(.25+rnd()*(layer?.45:.6)); g.fillStyle=layer?'#0b0f1c':'#16203a'; g.fillRect(x,h-bh,bw,bh);
+      for(let yy=h-bh+12; yy<h-10; yy+=18) for(let xx=x+8; xx<x+bw-8; xx+=14) if(rnd()>.55){ g.fillStyle=rnd()>.8?'#ffe6a8':'#f7c46c'; g.fillRect(xx,yy,6,9);} x+=bw+(layer?2:6);} }
+    g.strokeStyle='#0a0a0a'; g.lineWidth=14; for(let i=1;i<4;i++){ g.beginPath(); g.moveTo(w*i/4,0); g.lineTo(w*i/4,h); g.stroke(); }
+  });
+  put(sky,X1-0.12,2.3,cz,'-x');
+  // desk
+  const walnut=lam('#5a3420');
+  box(3.4,0.1,1.5,walnut,X1-4.2,0.78,cz); box(0.12,0.78,1.4,walnut,X1-5.8,0.39,cz); box(0.12,0.78,1.4,walnut,X1-2.6,0.39,cz);
+  box(0.7,1.2,0.7,lam('#141414'),X1-2.7,0.6,cz); // chair
+  box(0.6,0.05,0.4,lam('#222'),X1-4.4,0.85,cz+0.2); // laptop
+  const lamp=cyl(0.15,0.2,0.08,lam('#c9a24a'),X1-5.2,0.86,cz-0.5); cyl(0.02,0.02,0.5,lam('#c9a24a'),X1-5.2,1.1,cz-0.5);
+  // rug
+  const rug=new THREE.Mesh(new THREE.PlaneGeometry(6,5),lam('#3c2a2a')); rug.rotation.x=-Math.PI/2; rug.position.set(X1-4.2,0.01,cz); scene.add(rug);
+  exhibit({x:X1-6.6,z:cz,r:2.6,k:r.k,title:'From one person to a production engine.',color:'#ffd9a0',
+    html:`<p>Founder's Office and Head of Production. I built the content function from one person to 25+ core staff and 100+ freelancers, helped build seven in-house recording booths, and owned budgets, casting and delivery on the production side.</p>
+    <div class="stats"><div><b>460</b><span>titles shipped</span></div><div><b>3,000+</b><span>hours of audio</span></div><div><b>25+</b><span>core team built</span></div><div><b>7</b><span>booths built</span></div></div>`});
+  // stats wall on z0
+  const st = panel(10,3.3,(g,w,h)=>{
+    g.fillStyle='#121722'; g.fillRect(0,0,w,h);
+    T(g,'B2 · FEB 2022 – PRESENT · CATALOGUE',44,40,F(600,30,'M'),'#ffd9a0');
+    const big=[['460','titles shipped'],['3,000+','hours of audio'],['25+','core team'],['100+','freelancers'],['7','booths built']];
+    big.forEach((b,i)=>{ const x=44+i*(w-88)/5; T(g,b[0],x,100,F(900,104,'A'),'#f5efe3'); T(g,b[1],x,224,F(500,30),'#a9b0c0'); });
+    const types=[['Audio series',103],['Microdrama dubs',67],['Book summaries',60],['Full books',55],['Non-fiction originals',49],['Infotainment video',48]];
+    const max=103; types.forEach((t,i)=>{ const y=320+i*52; T(g,t[0],44,y,F(500,30),'#cfd5e2'); g.fillStyle='#ffd9a0'; g.fillRect(420,y+6,(w*0.42)*(t[1]/max),24); T(g,String(t[1]),430+(w*0.42)*(t[1]/max),y,F(600,28,'M'),'#ffd9a0'); });
+    T(g,'Shipped for KukuFM · KukuTV · KukuGuru · Pratilipi FM · QuickTV',44,h-62,F(500,30),'#a9b0c0');
+  });
+  put(st,r.cx,2.35,r.z0+0.12,'+z');
+  exhibit({x:r.cx,z:r.z0+3,r:2.8,k:'B2 · Catalogue',title:'460 titles, logged.',color:'#ffd9a0',
+    html:`<p>103 audio series, 67 microdrama dubs, 60 book summaries, 55 full books, 49 non-fiction originals and 48 infotainment video series, plus podcasts, docs and promos.</p>
+    <p class="note">Mostly Tamil, plus Hindi, Telugu, Marathi and Malayalam. Shipped for KukuFM, KukuTV, KukuGuru, Pratilipi FM and QuickTV. Music production and sound design were a big part of the first two years.</p>`});
+  // thumbnails wall on z1
+  const cols=6, rows=2, tw=1.35, th=1.8;
+  for(let i=0;i<SHOW_SLOTS;i++){ const col=i%cols,row=Math.floor(i/cols); const s=SHOWS[i];
+    const p=panel(tw,th,(g,w,h)=>{ g.fillStyle='#1b2130'; g.fillRect(0,0,w,h); g.setLineDash([9,7]); g.strokeStyle='rgba(255,217,160,.4)'; g.lineWidth=3; g.strokeRect(8,8,w-16,h-16);
+      T(g,'SHOW',w/2,h/2-30,F(600,20,'M'),'rgba(255,217,160,.6)','center'); T(g,String(i+1).padStart(2,'0'),w/2,h/2,F(800,40,'A'),'rgba(255,217,160,.8)','center'); },{px:180});
+    put(p,r.cx-((cols-1)*(tw+0.3))/2+col*(tw+0.3),3.35-row*(th+0.2),r.z1-0.12,'-z');
+    if(s&&s.img){ new THREE.TextureLoader().load(s.img,t=>{t.colorSpace=THREE.SRGBColorSpace; p.material.map=t; p.material.needsUpdate=true;}); }
+  }
+  exhibit({x:r.cx,z:r.z1-3,r:2.8,k:'B2 · Wall of shows',title:'Shows produced under me.',color:'#ffd9a0',
+    html:`<p>A selection of the shows my team produced. Artwork going up here soon.</p>`});
+  // founder's office (strategy) by the window
+  exhibit({x:X1-2.2,z:cz-3.6,r:2,k:'B2 · Founder’s Office',title:'Working with the founder on strategy.',color:'#ffd9a0',
+    html:`<p>Alongside production, I worked directly with the founder on strategy. I initiated the pivot from B2B services into a proprietary product, owned the market research and investor narrative behind it, and presented to an investor syndicate and to angel investors.</p>`});
+}
+
+/* ===== LABS ===== */
+{
+  const r=ROOMS[4], cz=r.c;
+  // grid floor
+  const grid = panel(14,14,(g,w,h)=>{ g.fillStyle='#06090b'; g.fillRect(0,0,w,h); g.strokeStyle='rgba(61,255,181,.35)'; g.lineWidth=2; const s=w/14; for(let i=0;i<=14;i++){ g.beginPath(); g.moveTo(i*s,0); g.lineTo(i*s,h); g.stroke(); g.beginPath(); g.moveTo(0,i*s); g.lineTo(w,i*s); g.stroke(); } },{px:80});
+  grid.rotation.x=-Math.PI/2; grid.position.set(r.cx,0.006,cz); scene.add(grid);
+  const title = panel(8,2.2,(g,w,h)=>{ g.fillStyle='#06090b'; g.fillRect(0,0,w,h); T(g,'BONUS TRACKS · THE LABS',40,30,F(600,40,'M'),'#3dffb5'); wrap(g,'Things I build on the side to learn how products actually get made.',40,92,w-80,96,F(800,84,'A'),'#e9fff6'); });
+  put(title,r.x0+0.12,3.2,cz,'+x');
+  const labs=[
+    {n:'Kadhal',y:'2025 · Product',c:'#ff4f8b',geo:new THREE.TorusKnotGeometry(0.32,0.11,90,12),x:-4,z:-3.4,
+      html:`<p>A dating product I designed and shipped end to end with no engineering background, built as part of PGP Bharat. The backend is currently unfunded, so the demo is partial.</p><div class="links"><a href="https://kadhal-three.vercel.app" target="_blank" rel="noopener">Open the demo ↗</a></div>`},
+    {n:'Swara Sense',y:'2026 · Game',c:'#ffd166',geo:new THREE.IcosahedronGeometry(0.45,0),x:0.5,z:-3.4,
+      html:`<p>A Carnatic ear-training game. Hear a swara, name it, get sharper. Built with Claude and live for anyone to play.</p><p class="note">Link coming here.</p>`},
+    {n:'Rockstar',y:'2026 · Game',c:'#b26bff',geo:new THREE.OctahedronGeometry(0.5,0),x:-4,z:3.4,
+      html:`<p>An open-world music career game. Play street gigs, earn, unlock genres and climb from street to stadium. Built as a prototype for a community where artists learn and earn.</p><p class="note">Link coming here.</p>`},
+    {n:'The business of entertainment',short:'Writing',y:'2026 · Writing',c:'#3dd5ff',geo:new THREE.SphereGeometry(0.42,18,12),x:0.5,z:3.4,wire:true,
+      html:`<p>Short films decoding how the attention economy actually pays. In progress alongside PGP Bharat.</p><div class="links"><a href="https://www.instagram.com/rohit.vasudevan" target="_blank" rel="noopener">Follow along ↗</a></div>`},
+  ];
+  r.spin=[];
+  labs.forEach(l=>{
+    const px=r.cx+l.x, pz=cz+l.z;
+    cyl(0.55,0.65,1,lam('#11171a'),px,0.5,pz);
+    const ring=cyl(0.56,0.56,0.04,new THREE.MeshBasicMaterial({color:l.c}),px,1.0,pz,32);
+    const m=new THREE.Mesh(l.geo, l.wire?new THREE.MeshBasicMaterial({color:l.c,wireframe:true}):new THREE.MeshLambertMaterial({color:l.c,emissive:l.c,emissiveIntensity:.35}));
+    m.position.set(px,1.75,pz); scene.add(m); r.spin.push(m);
+    const lab=panel(1.6,0.5,(g,w,h)=>{ g.fillStyle='rgba(6,9,11,.85)'; g.fillRect(0,0,w,h); g.fillStyle=l.c; g.fillRect(0,h-5,w,5); T(g,l.short||l.n,w/2,h/2,F(800,48,'A'),'#f2fff9','center','middle'); },{px:200});
+    lab.position.set(px,2.45,pz); scene.add(lab); r.labels=(r.labels||[]); r.labels.push(lab);
+    exhibit({x:px+(r.side==='L'?1.4:-1.4),z:pz,mx:px+1.3,r:1.9,k:l.y,title:l.n,color:l.c,html:l.html});
+  });
+}
+
+/* ===== PGP BHARAT ===== */
+{
+  const r=ROOMS[5], cz=r.c, X1=r.x1;
+  const main = panel(8,2.8,(g,w,h)=>{
+    g.fillStyle='#f6eedc'; g.fillRect(0,0,w,h); g.fillStyle='#c9744b'; g.fillRect(0,0,18,h);
+    T(g,"MASTERS' UNION · COHORT 02 · MAY – DEC 2026",50,44,F(600,30,'M'),'#9a4b28');
+    T(g,'PGP Bharat',50,96,F(900,120,'A'),'#2a1a12');
+    wrap(g,'Classroom plus field immersions, built for people who want to build for Bharat.',50,250,w-100,50,F(500,40),'#5b4636');
+  });
+  put(main,X1-0.12,2.5,cz,'-x');
+  exhibit({x:X1-3.2,z:cz,r:2.8,k:r.k,title:'PGP Bharat, Masters’ Union.',color:'#c9744b',
+    html:`<p>Cohort 02, May to December 2026. After nine years of doing, a deliberate stretch of learning the frameworks behind what I'd been running on instinct, then testing them in the field.</p>
+    <p class="note">Also: Y Combinator Startup School, 2025. B.E. Electrical and Electronics, Dhanalakshmi College of Engineering, 2017.</p>`});
+  const cases=['Havells','Jaipur Rugs','NIVIA','Samsara','Stable Money','Mayukh Tea','Ada Chikankari'];
+  const cw=1.5;
+  cases.forEach((c,i)=>{ const p=panel(cw,1.1,(g,w,h)=>{ g.fillStyle='#fffaf0'; g.fillRect(0,0,w,h); g.fillStyle='#c9744b'; g.fillRect(0,0,w,10); T(g,'CASE',20,26,F(600,18,'M'),'#9a4b28'); wrap(g,c,20,56,w-40,40,F(800,34,'A'),'#2a1a12'); },{px:200});
+    put(p,r.cx-((cases.length-1)*(cw+0.25))/2+i*(cw+0.25),2.3,r.z0+0.12,'+z'); });
+  const ct = panel(6,0.6,(g,w,h)=>{ T(g,'CASE CHALLENGES',0,10,F(600,30,'M'),'#7a3a1c'); },{px:180,opaque:false});
+  put(ct,r.cx-((cases.length-1)*(cw+0.25))/2-0.75+3,3.2,r.z0+0.13,'+z');
+  exhibit({x:r.cx,z:r.z0+3,r:2.8,k:'PGP · Case challenges',title:'Seven businesses, seven core questions.',color:'#c9744b',
+    html:`<p>Case challenges for Havells, Jaipur Rugs, NIVIA, Samsara, Stable Money, Mayukh Tea and Ada Chikankari. Each one boiled down to a single core question and a recommendation.</p>`});
+  // benches
+  const bm=lam('#8b5e3c'); for(let i=0;i<3;i++) box(3,0.45,0.8,bm,r.cx,0.225,cz+0.5+i*1.8-1.6);
+}
+
+/* ===== LINER NOTES (end wall) ===== */
+{
+  const p = panel(5.6,3.4,(g,w,h)=>{
+    g.fillStyle='#f3ece0'; g.fillRect(0,0,w,h);
+    T(g,'LINER NOTES',44,40,F(600,32,'M'),'#9a4b28');
+    wrap(g,'Always up for a conversation about music, media and building things.',44,96,w-88,80,F(900,68,'A'),'#1d1410');
+    const rows=[['Email','rohitsrinivasanv@gmail.com'],['Phone','+91 96771 82573'],['LinkedIn','rohit-srinivasan-v'],['Instagram','not_that_rohit_anymore']];
+    rows.forEach((r,i)=>{ T(g,r[0].toUpperCase(),44,370+i*64,F(600,26,'M'),'#9a4b28'); T(g,r[1],260,364+i*64,F(600,38),'#1d1410'); });
+    T(g,'Recorded in Chennai · © 2026 Rohit Srinivasan V',44,h-56,F(500,26),'#7b6a5c');
+  });
+  put(p,0,2.1,HALL.z0+0.12,'+z');
+  exhibit({x:0,z:HALL.z0+2.6,r:2.6,k:'Liner notes',title:'Let’s talk.',color:'#ffb347',
+    html:`<p>Always up for a conversation about music, media and building things.</p>
+    <p><b>Email</b> rohitsrinivasanv@gmail.com<br><b>Phone</b> +91 96771 82573</p>
+    <div class="links"><a href="mailto:rohitsrinivasanv@gmail.com">Email ↗</a><a href="https://www.linkedin.com/in/rohit-srinivasan-v/" target="_blank" rel="noopener">LinkedIn ↗</a><a href="https://www.instagram.com/not_that_rohit_anymore" target="_blank" rel="noopener">Instagram ↗</a></div>`});
+}
+
+/* ---------- zones ---------- */
+const HALLZONE={id:'hall',k:'The hall',n:'Rohit Srinivasan V',pad:[130.8,164.8,196,246.9]};
+function zoneAt(x,z){ for(const r of ROOMS){ if(x>r.x0&&x<r.x1&&z>r.z0&&z<r.z1) return r; } return HALLZONE; }
+
+/* ---------- menu ---------- */
+const DEST=[
+  {n:'Entrance',s:'Start',x:0,z:3.2,yaw:0},
+  ...ROOMS.map(r=>({n:r.n,s:r.k,x:r.side==='L'?r.x1-1.4:r.x0+1.4,z:r.c,yaw:r.side==='L'?Math.PI/2:-Math.PI/2})),
+  {n:'Liner notes',s:'Contact',x:0,z:HALL.z0+4,yaw:0},
+];
+const golist=document.getElementById('golist');
+DEST.forEach(d=>{ const b=document.createElement('button'); b.className='go'; b.innerHTML=`${d.n}<span>${d.s}</span>`; b.onclick=()=>{ player.x=d.x; player.z=d.z; player.yaw=d.yaw; player.pitch=-0.04; menu.classList.remove('on'); }; golist.appendChild(b); });
+const menu=document.getElementById('menu');
+document.getElementById('rooms').onclick=()=>menu.classList.add('on');
+document.getElementById('closemenu').onclick=e=>{e.preventDefault();menu.classList.remove('on');};
+menu.addEventListener('click',e=>{ if(e.target===menu) menu.classList.remove('on'); });
+
+/* ---------- card ---------- */
+const card=document.getElementById('card'), ck=document.getElementById('ck'), ch=document.getElementById('ch'), cb=document.getElementById('cb');
+let current=null;
+function playerHTML(){
+  const rows=[];
+  for(let i=0;i<TRACK_SLOTS;i++){ const t=TRACKS[i];
+    if(t) rows.push(`<div class="trk"><div>${t.title}<small>${t.note}</small></div>${t.file?`<button data-i="${i}">Play</button>`:`<a href="${t.link}" target="_blank" rel="noopener" class="slot" style="text-decoration:none;color:inherit">Spotify ↗</a>`}</div>`);
+  }
+  const extra = TRACK_SLOTS-TRACKS.length;
+  const playable = TRACKS.some(t=>t.file);
+  return `<p>Every track I've put out, released and unreleased, on shuffle while you walk.</p>
+  <div style="margin-top:8px">${rows.join('')}${extra>0?`<div class="trk"><div>${extra} more tracks<small>Released and unreleased, being added</small></div><span class="slot">Coming soon</span></div>`:''}</div>
+  ${playable?`<div class="links"><button id="shuf">Shuffle</button><button class="ghost" id="stopt">Stop</button></div>`:''}`;
+}
+function showCard(e){
+  if(current===e) return; current=e;
+  if(!e){ card.classList.remove('on'); return; }
+  ck.textContent=e.k; ch.textContent=e.title; cb.innerHTML=e.player?playerHTML():e.html; card.scrollTop=0;
+  card.classList.add('on');
+}
+// track playback (works once files are added in the repo)
+let audioEl=null;
+function playTrack(i){ const t=TRACKS[i]; if(!t||!t.file) return; if(audioEl){audioEl.pause();} audioEl=new Audio(t.file); audioEl.volume=.8; audioEl.play().catch(()=>{}); audioEl.onended=()=>shuffle(); duck(true); }
+function shuffle(){ const ok=TRACKS.map((t,i)=>t.file?i:-1).filter(i=>i>=0); if(ok.length) playTrack(ok[Math.floor(Math.random()*ok.length)]); }
+cb.addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; if(b.dataset.i) playTrack(+b.dataset.i); if(b.id==='shuf') shuffle(); if(b.id==='stopt'){ audioEl&&audioEl.pause(); duck(false);} });
+
+/* ---------- ambient sound (generated, one chord per room) ---------- */
+let AC=null, master=null, padGains={}, soundOn=true;
+function initAudio(){
+  try{
+    AC=new (window.AudioContext||window.webkitAudioContext)();
+    master=AC.createGain(); master.gain.value=0.0; master.connect(AC.destination);
+    const lp=AC.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=1100; lp.Q.value=.4; lp.connect(master);
+    [HALLZONE,...ROOMS].forEach(z=>{
+      const g=AC.createGain(); g.gain.value=0; g.connect(lp); padGains[z.id]=g;
+      z.pad.forEach((f,i)=>{ [ -4, 4 ].forEach(d=>{ const o=AC.createOscillator(); o.type=i%2?'triangle':'sine'; o.frequency.value=f; o.detune.value=d+(i*1.3);
+        const og=AC.createGain(); og.gain.value=0.05/(1+i*.35);
+        const lfo=AC.createOscillator(); lfo.frequency.value=.05+i*.03; const lg=AC.createGain(); lg.gain.value=0.02/(1+i*.35); lfo.connect(lg); lg.connect(og.gain); lfo.start();
+        o.connect(og); og.connect(g); o.start(); }); });
+    });
+    master.gain.setTargetAtTime(0.55,AC.currentTime,1.5);
+  }catch(e){ AC=null; }
+}
+let ducked=false; function duck(v){ ducked=v; if(master&&AC) master.gain.setTargetAtTime(soundOn&&!v?0.55:(soundOn?0.12:0),AC.currentTime,.4); }
+const sndBtn=document.getElementById('snd');
+sndBtn.onclick=()=>{ soundOn=!soundOn; sndBtn.textContent=soundOn?'Sound on':'Sound off'; if(AC){ if(AC.state==='suspended')AC.resume(); master.gain.setTargetAtTime(soundOn?(ducked?.12:.55):0,AC.currentTime,.3);} if(!soundOn&&audioEl)audioEl.pause(); };
+
+/* ---------- input ---------- */
+const keys={};
+addEventListener('keydown',e=>{ keys[e.code]=true; if(e.code==='KeyM') menu.classList.toggle('on'); if(e.code==='Escape') menu.classList.remove('on'); });
+addEventListener('keyup',e=>{ keys[e.code]=false; });
+let drag=null;
+canvas.addEventListener('mousedown',e=>{ drag={x:e.clientX,y:e.clientY}; });
+addEventListener('mouseup',()=>drag=null);
+addEventListener('mousemove',e=>{ if(!drag) return; const dx=e.clientX-drag.x, dy=e.clientY-drag.y; drag={x:e.clientX,y:e.clientY}; player.yaw-=dx*0.0042; player.pitch=Math.max(-1.1,Math.min(1.1,player.pitch-dy*0.0034)); });
+// touch: left half joystick, right half look
+const joy=document.getElementById('joy'), knob=joy.querySelector('i');
+let jt=null, lt=null, jv={x:0,y:0};
+canvas.addEventListener('touchstart',e=>{ e.preventDefault(); for(const t of e.changedTouches){
+  if(t.clientX<innerWidth*0.45 && jt===null){ jt={id:t.identifier,x:t.clientX,y:t.clientY}; joy.style.left=t.clientX+'px'; joy.style.top=t.clientY+'px'; joy.style.display='block'; knob.style.transform='none'; }
+  else if(lt===null){ lt={id:t.identifier,x:t.clientX,y:t.clientY}; } } },{passive:false});
+canvas.addEventListener('touchmove',e=>{ e.preventDefault(); for(const t of e.changedTouches){
+  if(jt&&t.identifier===jt.id){ let dx=t.clientX-jt.x, dy=t.clientY-jt.y; const L=Math.hypot(dx,dy), M=48; if(L>M){dx*=M/L;dy*=M/L;} jv={x:dx/M,y:dy/M}; knob.style.transform=`translate(${dx}px,${dy}px)`; }
+  else if(lt&&t.identifier===lt.id){ const dx=t.clientX-lt.x, dy=t.clientY-lt.y; lt.x=t.clientX; lt.y=t.clientY; player.yaw-=dx*0.006; player.pitch=Math.max(-1.1,Math.min(1.1,player.pitch-dy*0.005)); } } },{passive:false});
+const tend=e=>{ for(const t of e.changedTouches){ if(jt&&t.identifier===jt.id){ jt=null; jv={x:0,y:0}; joy.style.display='none'; } if(lt&&t.identifier===lt.id) lt=null; } };
+canvas.addEventListener('touchend',tend); canvas.addEventListener('touchcancel',tend);
+
+addEventListener('resize',()=>{ camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth,innerHeight,false); });
+
+/* ---------- loop ---------- */
+const zk=document.getElementById('zk'), zn=document.getElementById('zn'), hint=document.getElementById('hint');
+let last=performance.now(), bob=0, zoneId=null, t0=0, moved=0, started=false;
+function frame(now){
+  const dt=Math.min(0.05,(now-last)/1000); last=now; t0+=dt;
+  // movement
+  let fx=0, fz=0;
+  if(keys.KeyW||keys.ArrowUp) fz+=1; if(keys.KeyS||keys.ArrowDown) fz-=1;
+  if(keys.KeyD) fx+=1; if(keys.KeyA) fx-=1;
+  if(keys.ArrowLeft) player.yaw+=1.9*dt; if(keys.ArrowRight) player.yaw-=1.9*dt;
+  fx+=jv.x; fz+=-jv.y;
+  const mag=Math.hypot(fx,fz); if(mag>1){fx/=mag;fz/=mag;}
+  const speed=(keys.ShiftLeft||keys.ShiftRight)?6.5:3.6;
+  const s=Math.sin(player.yaw), c=Math.cos(player.yaw);
+  const vx=(-s*fz + c*fx)*speed*dt, vz=(-c*fz - s*fx)*speed*dt;
+  if(started){
+    if(canStand(player.x+vx,player.z)) player.x+=vx;
+    if(canStand(player.x,player.z+vz)) player.z+=vz;
+  }
+  const sp=Math.hypot(vx,vz)/Math.max(dt,1e-4); bob+= sp*dt*2.2; moved+=Math.hypot(vx,vz);
+  if(moved>3 && hint.style.opacity!=='0') hint.style.opacity='0';
+  camera.position.set(player.x, EYE+Math.sin(bob)*0.035*Math.min(1,sp/3), player.z);
+  camera.rotation.set(player.pitch, player.yaw, 0);
+
+  // zone
+  const z=zoneAt(player.x,player.z);
+  if(z.id!==zoneId){ zoneId=z.id; zk.textContent=z.k; zn.textContent=z.n;
+    if(AC) for(const id in padGains) padGains[id].gain.setTargetAtTime(id===z.id?1:0,AC.currentTime,1.2); }
+
+  // nearest exhibit
+  let best=null, bd=1e9;
+  for(const e of exhibits){ const d=Math.hypot(player.x-e.x,player.z-e.z); if(d<e.r && d<bd){bd=d;best=e;} if(e.ring){ e.ring.material.opacity=.35+.3*Math.sin(t0*2.4+e.x); } }
+  if(started) showCard(best);
+
+  // animations
+  ROOMS[0].spin.forEach(m=>m.rotation.y+=dt*3.5);
+  ROOMS[4].spin.forEach((m,i)=>{ m.rotation.y+=dt*(.6+i*.15); m.rotation.x+=dt*.25; m.position.y=1.75+Math.sin(t0*1.4+i)*0.08; });
+  (ROOMS[4].labels||[]).forEach(l=>{ l.rotation.y=Math.atan2(camera.position.x-l.position.x, camera.position.z-l.position.z); });
+  if(ROOMS[2].rec) ROOMS[2].rec.material.color.setHex(Math.sin(t0*3)>0?0xff2d2d:0x5a1010);
+
+  renderer.render(scene,camera);
+  requestAnimationFrame(frame);
+}
+
+const enter=document.getElementById('enter');
+requestAnimationFrame(frame);
+enter.disabled=false; enter.textContent='Enter the world';
+enter.onclick=()=>{ document.getElementById('intro').style.display='none'; started=true; initAudio(); if(AC&&AC.state==='suspended') AC.resume(); };
+</script>
+</body>
+</html>

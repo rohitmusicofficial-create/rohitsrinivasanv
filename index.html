@@ -192,6 +192,11 @@ p{margin:0}
 footer{border-top:1px solid var(--line);padding-block:26px;color:var(--dust)}
 footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 
+
+/* enter the world (quiet hero link) */
+.sidedoor{display:inline-block;margin-top:22px;color:var(--dust);text-decoration:none;font-size:.95rem;border-bottom:1px dotted color-mix(in srgb,var(--dust) 60%,transparent);padding-bottom:2px;transition:color .2s,border-color .2s}
+.sidedoor:hover{color:var(--marigold);border-color:var(--marigold)}
+
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   .vinyl{animation:none}
@@ -211,6 +216,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
       <a href="#side-b">Side B</a>
       <a href="#bonus" class="hide-s">Bonus</a>
       <a href="#contact">Contact</a>
+      <a href="world.html" class="hide-s">3D</a>
     </nav>
   </div>
 </header>
@@ -222,6 +228,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
       <h1 class="name">Rohit<span class="wide">Srinivasan V</span></h1>
       <p class="lede"><b>Musician turned operator.</b> Nine years in Tamil music and media, from <em>cutting my own records</em> to <em>running a studio floor</em> to <em>building a production company's engine room</em>.</p>
       <div class="meta mono"><span>200+ tracks sung</span><span>460 titles shipped</span><span>3,000+ hrs of audio</span></div>
+      <a class="sidedoor" href="world.html">or walk through it instead →</a>
     </div>
 
     <div class="deck" id="deck">
